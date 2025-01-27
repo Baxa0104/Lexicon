@@ -7,4 +7,5 @@ Group Name: Lexicon
 Members:
 - Bakhtiyor Sohibnazarov
 - Aboubacar Sylla
+
 SCRUM Master:
