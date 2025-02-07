@@ -1,18 +1,20 @@
 **Software Engineering Module**  
 **University of Roehampton**  
-**Date Updated: 27.01.2025**
+**Date Updated: 07.02.2025**
 
 ---
 
 ## Group Name: Lexicon
-## Project Name:
+## Project Name: PeerRide
 ## Project Theme: Ride Sharing app to the University
 
 
 ### Members:
-- Bakhtiyor Sohibnazarov
-- Aboubacar Sylla
-- Zubair Yusuf
+- Bakhtiyor Sohibnazarov – SOH22590018
+- Zubair Yusuf – YUS23592590
+- Aboubacar Sylla - SYL23568693
+- Ismail Abdullahi – ABD23589297
+
 
 ### SCRUM Master:
 - Bakhtiyor Sohibnazarov
@@ -21,41 +23,7 @@
 
 ## Overview
 
-Project Name is an application that focuses on helping students and individuals to save money and time on transportation as well and minimizing environmental impact. 
-
-This project is part of the Software Engineering module at the University of Roehampton and aims to create flexible, dynamic web applications
-
----
-
-## Features
-
-- **Feature 1**: Description of the feature.
-- **Feature 2**: Description of the feature.
-- **Feature 3**: Description of the feature.
-
-(Include additional features as necessary)
-
----
-
-## Installation
-
-1. Clone the repository:
-    ```bash
-    git clone https://github.com/yourusername/lexicon.git
-    ```
-2. Navigate to the project directory:
-    ```bash
-    cd lexicon
-    ```
-3. Install dependencies (if any):
-    ```bash
-    npm install
-    ```
-4. Run the application:
-    ```bash
-    npm start
-    ```
-
+PeerRide is a ride-sharing dynamic web application created to make college students' commutes more economical and efficient. By connecting students going in the same direction, the app allows them to carpool to campus, save money on transportation, and lessen their carbon footprint. Through the application, users may connect with neighbouring students, provide or request transportation, and securely communicate. 
 ---
 
 ## Contributing
