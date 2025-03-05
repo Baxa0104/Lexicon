@@ -46,9 +46,19 @@ app.get("/hello/:name", function(req, res) {
     res.send("Hello " + req.params.name);
 });
 
-app.get("/usersList", function(req,res) {
-    console.log(req.params);
-    res.send("Users page!");
+app.get("/usersList", function(req, res) {
+    var sql = 'SELECT * FROM User';
+    db.query(sql).then(results => {
+        console.log("Fetched Data: ", results); // Log the data to verify its structure
+        res.render('usersPage', {
+            title: 'User List',
+            heading: 'List of Users',
+            data: results
+        });
+    }).catch(err => {
+        console.error("Database Error: ", err);
+        res.status(500).send("Internal Server Error");
+    });
 });
 
 // Start server on port 3000
