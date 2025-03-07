@@ -10,7 +10,7 @@ app.use(express.static("static"));
 // Get the functions in the db.js file to use
 const db = require('./services/db');
 
-// Create a route for root - /
+// Default Route when Web page is opened. Root Route.
 app.get("/", function(req, res) {
     res.send("Hello world!");
 });
@@ -25,15 +25,7 @@ app.get("/db_test", function(req, res) {
     });
 });
 
-// Create a route for /goodbye
-// Responds to a 'GET' request
-app.get("/goodbye", function(req, res) {
-    res.send("Goodbye world!");
-});
 
-// Create a dynamic route for /hello/<name>, where name is any value provided by user
-// At the end of the URL
-// Responds to a 'GET' request
 app.get("/hello/:name", function(req, res) {
     // req.params contains any parameters in the request
     // We can examine it in the console for debugging purposes
