@@ -1,0 +1,5 @@
+/* Fixed Sidebar (visible only on large screens) */
+.sidebar {
+    background-color: white !important;
+    border-right: 1px solid black !important;
+}

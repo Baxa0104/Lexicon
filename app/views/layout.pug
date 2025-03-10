@@ -1,0 +1,33 @@
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        
+        script(language="javascript" src="/bootstrap/js/bootstrap.min.js")
+        link(rel="stylesheet" href="/bootstrap/css/bootstrap.min.css")
+        link(rel="stylesheet" href="/bootstrap-icons/font/bootstrap-icons.css")
+        link(rel="stylesheet" href="/css/style.css")
+
+        title Listing Page Layout
+
+    body 
+        // Wrapper using Bootstrap flexbox (Sidebar + Content)
+        .d-flex
+            // Sidebar (Auto Width, Full Height)
+            nav.sidebar.d-flex.flex-column.p-3.bg-light.vh-100(style="width: 200px;")
+                h4.text-center Menu
+                button.btn.btn-light.text-start
+                    i.bi.bi-speedometer Dashboard
+                        i.bi.bi-caret-right-fill
+
+                a(href="#").text-decoration-none.py-2.px-3.text-dark Ride Offer
+                a(href="#").text-decoration-none.py-2.px-3.text-dark Ride Request
+                a(href="#").text-decoration-none.py-2.px-3.text-dark History
+                a(href="#").text-decoration-none.py-2.px-3.text-dark Social
+
+            // Main Content (Takes Remaining Space)
+            .flex-grow-1.p-4
+                h2 Responsive Sidebar Example
+                p This is the main content area.
+        
