@@ -10,14 +10,15 @@ app.set('views', './app/views');
 
 // Add static files location
 app.use(express.static("static"));
-app.use(express.static('./app/css'));
+app.use('/bootstrap', express.static('node_modules/bootstrap/dist'));
+app.use('/bootstrap-icons', express.static('node_modules/bootstrap-icons'))
 
 // Get the functions in the db.js file to use
 const db = require('./services/db');
 
 // Default Route when Web page is opened. Root Route.
 app.get("/", function(req, res) {
-    res.render('listingLayout')
+    res.render('layout')
 });
 
 // Create a route for testing the db
