@@ -18,19 +18,14 @@ const db = require('./services/db');
 
 // Default Route when Web page is opened. Root Route.
 app.get("/", function(req, res) {
-    res.render('layout')
+    res.redirect('/dashboard');
 });
 
-// Create a route for testing the db
-app.get("/db_test", function(req, res) {
-    // Assumes a table called test_table exists in your database
-    sql = 'select * from test_table';
-    db.query(sql).then(results => {
-        console.log(results);
-        res.send(results)
+app.get("/dashboard", function(req, res) {
+    res.render('layout', {
+    currentRoute: '/dashboard'
     });
 });
-
 
 app.get("/rides", function(req, res) {
     var sql = 'SELECT * FROM ride';
@@ -39,6 +34,7 @@ app.get("/rides", function(req, res) {
         console.log("Fetched Data: ", results);
 
         res.render('listing', {
+            currentRoute: '/rides',
             title: 'Ride Request',
             heading: 'List of Rides',
             data: results
