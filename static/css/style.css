@@ -3,3 +3,8 @@
     background-color: white;
     border-right: 1px solid black;
 }
+
+.btn.active{
+    background-color: #ffbd03 !important;
+    outline: #ffbd03 !important;
+}

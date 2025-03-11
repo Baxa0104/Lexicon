@@ -15,41 +15,41 @@ html(lang="en")
         // Wrapper using Bootstrap flexbox (Sidebar + Content)
         .d-flex
             // Sidebar (Fixed Width, Full Height)
-            nav.sidebar.d-flex.flex-column.p-3.bg-white.vh-100.position-fixed(style="width: 300px;")
+            nav.sidebar.d-flex.flex-column.p-3.bg-white.vh-100.position-fixed(style="width: 250px;")
                 h4.text-center PeerRide
                 hr
 
-                button.btn.btn-light.d-flex.align-items-center.justify-content-between.w-100.mb-3.btn-lg
+                button.btn.btn-light.d-flex.align-items-center.justify-content-between.w-100.mb-3(class=currentRoute == '/dashboard' ? 'active' : '', onclick="window.location.href='/dashboard'")
                     span
                         i.bi.bi-speedometer 
                         | Dashboard
                     i.bi.bi-caret-right-fill
 
-                button.btn.btn-light.d-flex.align-items-center.justify-content-between.w-100.mb-3.btn-lg
+                button.btn.btn-light.d-flex.align-items-center.justify-content-between.w-100.mb-3(class=currentRoute == '/offer' ? 'active' : '').disabled
                     span
                         i.bi.bi-car-front-fill 
                         | Ride Offer 
                     i.bi.bi-caret-right-fill 
 
-                button.btn.btn-light.d-flex.align-items-center.justify-content-between.w-100.mb-3.btn-lg
+                button.btn.btn-light.d-flex.align-items-center.justify-content-between.w-100.mb-3(class=currentRoute == '/rides' ? 'active' : '', onclick="window.location.href='/rides'")
                     span
                         i.bi.bi-bag-check-fill 
                         | Ride Request 
                     i.bi.bi-caret-right-fill 
                     
-                button.btn.btn-light.d-flex.align-items-center.justify-content-between.w-100.mb-3.btn-lg
+                button.btn.btn-light.d-flex.align-items-center.justify-content-between.w-100.mb-3(class=currentRoute == '/history' ? 'active' : '').disabled
                     span
                         i.bi.bi-hourglass-split 
                         | History 
                     i.bi.bi-caret-right-fill 
 
-                button.btn.btn-light.d-flex.align-items-center.justify-content-between.w-100.mb-3.btn-lg
+                button.btn.btn-light.d-flex.align-items-center.justify-content-between.w-100.mb-3(class=currentRoute == '/social' ? 'active' : '')
                     span
                         i.bi.bi-chat-left-fill 
                         | Social 
                     i.bi.bi-caret-right-fill
                 
-                button.btn.btn-light.d-flex.align-items-center.justify-content-between.w-100.mb-3.mt-auto.btn-lg
+                button.btn.btn-light.d-flex.align-items-center.justify-content-between.w-100.mb-3.mt-auto(class=currentRoute == '/account' ? 'active' : '').disabled
                     span
                         i.bi.bi-person-fill
                         | Account
@@ -57,10 +57,10 @@ html(lang="en")
 
             // Main Content (Centered)
             .flex-grow-1.d-flex.justify-content-center.bg-white.rounded(style="min-height: 100vh;")
-                .content-wrapper.w-100.p-4(style="max-width: 800px; margin-top: 80px; margin-left:300px;")
+                .content-wrapper.w-100.p-4(style="max-width: 800px; margin-top: 80px; margin-left:250px;")
                     // Header Section
                     .header.d-flex.justify-content-between.align-items-center.p-3.bg-white.shadow-sm.position-fixed(
-                        style="width: calc(100% - 300px); top: 0; left: 300px; z-index: 1000;"
+                        style="width: calc(100% - 250px); top: 0; left: 250px; z-index: 1000;"
                         )
                         h4.mb-0 Welcome, User!
                         input.form-control.w-50(type="text" placeholder="Search...").mt-auto
