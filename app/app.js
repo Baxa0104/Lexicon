@@ -32,12 +32,21 @@ app.get("/db_test", function(req, res) {
 });
 
 
-app.get("/hello/:name", function(req, res) {
-    // req.params contains any parameters in the request
-    // We can examine it in the console for debugging purposes
-    console.log(req.params);
-    //  Retrieve the 'name' parameter and use it in a dynamically generated page
-    res.send("Hello " + req.params.name);
+app.get("/rides", function(req, res) {
+    var sql = 'SELECT * FROM ride';
+
+    db.query(sql).then(results => {
+        console.log("Fetched Data: ", results);
+
+        res.render('listing', {
+            title: 'Ride Request',
+            heading: 'List of Rides',
+            data: results
+        });
+    }).catch(err => {
+        console.error("Database Error: ", err);
+        res.status(500).send("Internal Server Error");
+    });
 });
 
 // Start server on port 3000
