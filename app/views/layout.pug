@@ -14,20 +14,56 @@ html(lang="en")
     body 
         // Wrapper using Bootstrap flexbox (Sidebar + Content)
         .d-flex
-            // Sidebar (Auto Width, Full Height)
-            nav.sidebar.d-flex.flex-column.p-3.bg-light.vh-100(style="width: 200px;")
-                h4.text-center Menu
-                button.btn.btn-light.text-start
-                    i.bi.bi-speedometer Dashboard
-                        i.bi.bi-caret-right-fill
+            // Sidebar (Fixed Width, Full Height)
+            nav.sidebar.d-flex.flex-column.p-3.bg-light.rounded.vh-100(style="width: 200px;")
+                h4.text-center PeerRide
+                hr
 
-                a(href="#").text-decoration-none.py-2.px-3.text-dark Ride Offer
-                a(href="#").text-decoration-none.py-2.px-3.text-dark Ride Request
-                a(href="#").text-decoration-none.py-2.px-3.text-dark History
-                a(href="#").text-decoration-none.py-2.px-3.text-dark Social
+                button.btn.btn-light.d-flex.align-items-center.justify-content-between.w-100.mb-3
+                    span
+                        i.bi.bi-speedometer 
+                        | Dashboard
+                    i.bi.bi-caret-right-fill
 
-            // Main Content (Takes Remaining Space)
-            .flex-grow-1.p-4
-                h2 Responsive Sidebar Example
-                p This is the main content area.
-        
+                button.btn.btn-light.d-flex.align-items-center.justify-content-between.w-100.mb-3
+                    span
+                        i.bi.bi-car-front-fill 
+                        | Ride Offer 
+                    i.bi.bi-caret-right-fill 
+
+                button.btn.btn-light.d-flex.align-items-center.justify-content-between.w-100.mb-3
+                    span
+                        i.bi.bi-bag-check-fill 
+                        | Ride Request 
+                    i.bi.bi-caret-right-fill 
+                    
+                button.btn.btn-light.d-flex.align-items-center.justify-content-between.w-100.mb-3
+                    span
+                        i.bi.bi-hourglass-split 
+                        | History 
+                    i.bi.bi-caret-right-fill 
+
+                button.btn.btn-light.d-flex.align-items-center.justify-content-between.w-100.mb-3
+                    span
+                        i.bi.bi-chat-left-fill 
+                        | Social 
+                    i.bi.bi-caret-right-fill
+                
+                button.btn.btn-light.d-flex.align-items-center.justify-content-between.w-100.mb-3.mt-auto
+                    span
+                        i.bi.bi-person-fill
+                        | Account
+                    i.bi.bi-caret-right-fill
+
+            // Main Content (Centered)
+            .flex-grow-1.d-flex.justify-content-center.bg-white.rounded(style="min-height: 100vh;")
+                .content-wrapper.w-100.p-4(style="max-width: 800px;")
+                    // Header Section
+                    .header.d-flex.justify-content-between.align-items-center.p-3.mb-4
+                        h4.mb-0 Welcome, User!
+                        input.form-control.w-50(type="text" placeholder="Search...")
+
+                    // Main Content Area
+                    .container
+                        h2 Responsive Sidebar Example
+                        p This is the main content area.
