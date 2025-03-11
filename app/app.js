@@ -2,47 +2,66 @@
 const express = require("express");
 
 // Create express app
-var app = express();
+const app = express();
 
 // Add static files location
 app.use(express.static("static"));
 
-// Get the functions in the db.js file to use
-const db = require('./services/db');
+// Get the database functions
+const db = require("./services/db");
 
-// Create a route for root - /
-app.get("/", function(req, res) {
+// Root Route
+app.get("/", (req, res) => {
     res.send("Hello world!");
 });
 
-// Create a route for testing the db
-app.get("/db_test", function(req, res) {
-    // Assumes a table called test_table exists in your database
-    sql = 'select * from test_table';
-    db.query(sql).then(results => {
+// Test Database Connection Route
+app.get("/db_test", async (req, res) => {
+    try {
+        const sql = "SELECT * FROM test_table";  // Declare sql properly
+        const results = await db.query(sql);  // Ensure db.query() is properly awaited
         console.log(results);
-        res.send(results)
-    });
+        res.json(results);  // Use JSON for API responses
+    } catch (err) {
+        console.error("Database error:", err);
+        res.status(500).json({ error: "Database error: " + err.message });
+    }
 });
 
-// Create a route for /goodbye
-// Responds to a 'GET' request
-app.get("/goodbye", function(req, res) {
+// Goodbye Route
+app.get("/goodbye", (req, res) => {
     res.send("Goodbye world!");
 });
 
-// Create a dynamic route for /hello/<name>, where name is any value provided by user
-// At the end of the URL
-// Responds to a 'GET' request
-app.get("/hello/:name", function(req, res) {
-    // req.params contains any parameters in the request
-    // We can examine it in the console for debugging purposes
+// Dynamic Route for Greeting
+app.get("/hello/:name", (req, res) => {
     console.log(req.params);
-    //  Retrieve the 'name' parameter and use it in a dynamically generated page
-    res.send("Hello " + req.params.name);
+    res.send(`Hello ${req.params.name}`);
+});
+
+// Fetch User Details Route
+app.get("/rides/:ride_id", async (req, res) => {
+    try {
+        console.log(req.params); // Debugging log
+
+        const ride_id = req.params.ride_id;
+        const sql = "SELECT * FROM ride WHERE ride_id = ?";
+
+        const results = await db.query(sql, [ride_id]);  // Await db.query() properly
+
+        if (results.length === 0) {
+            return res.status(404).json({ error: "Invalid user ID: No user found." });
+        }
+
+        res.json(results[0]); // Send user details as JSON
+    } catch (err) {
+        console.error("Database query error:", err);
+        res.status(500).json({ error: "Database error: " + err.message });
+    }
 });
 
 // Start server on port 3000
-app.listen(3000,function(){
-    console.log(`Server running at http://127.0.0.1:3000/`);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server running at http://127.0.0.1:${PORT}/`);
 });
