@@ -1,0 +1,11 @@
+extends layout 
+
+block content
+
+    each ride in data
+        div.container.rounded.bg-light
+            h2 #{ride.origin_address}
+            p Destination: #{ride.destination_address}
+
+    if !data.length
+        p No users found.
