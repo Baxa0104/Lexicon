@@ -1,21 +1,33 @@
 extends layout
 
 block content
+    h1 User Profile
 
-    if user
-        .card
-            .card-body
-                h2= user.user_name
-
+    .container.rounded.bg-light.p-4
+        .row
+            .col-md-4.text-center
                 if user.profile_pic
-                    img(src=user.profile_pic, alt="Profile Picture", width="150")
-                p Email: #{user.email}
-                p Phone: #{user.phone_number}
-                p Address: #{user.address}
-                p Bio: #{user.bio}
-                p Role: #{user.role}
+                    img(src=user.profile_pic, alt="Profile Picture", class="img-fluid rounded-circle", width="150")
+                else
+                    i.bi.bi-person-circle.display-1.text-secondary
+                h3.mt-3 #{user.user_name}
 
+            .col-md-8
+                .card.shadow-sm 
+                    .card-body 
+                        h4.text-primary User Details
+                        hr
+                        p.mb-2 
+                            strong Email:  
+                            | #{user.email}
+                        p.mb-2 
+                            strong Phone:  
+                            | #{user.phone_number}
+                        p.mb-2 
+                            strong Address:  
+                            | #{user.address}
+                        p.mb-2 
+                            strong Role:  
+                            | #{user.role}
 
-
-    else
-        p User not found.
+                        a.btn.btn-primary.mt-3(href="/account/edit") Edit Profile

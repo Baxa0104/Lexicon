@@ -4,7 +4,7 @@ block content
     h1 #{heading}
 
     each user in data
-        div
+        div.container.rounded.bg-light
             h2 #{user.user_name}
             if user.profile_pic
                 img(src=user.profile_pic, alt="Profile Picture", width="150")
