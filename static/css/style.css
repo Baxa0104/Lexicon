@@ -8,3 +8,24 @@
     background-color: #ffbd03 !important;
     outline: #ffbd03 !important;
 }
+
+.image-container {
+    width: 150px; /* Set the width of the image container */
+    height: 150px; /* Set the height of the image container */
+    overflow: hidden; /* Hide any part of the image that overflows */
+    align-self: center;
+    margin-right: 16px;
+    border-radius: 5px;
+  }
+  
+  .image-container img {
+    width: 100%; /* Ensure the image fills the container */
+    height: 100%; /* Ensure the image fills the container */
+    object-fit: cover; /* This will crop the image and maintain the aspect ratio */
+  }
+  
+  /* Optional: Adjust content container */
+  .content-container {
+    flex-grow: 1; /* Make sure the content container takes up the remaining space */
+  }
+  

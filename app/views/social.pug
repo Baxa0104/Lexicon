@@ -1,17 +1,18 @@
 extends layout
 
 block content
-    h1 #{heading}
+  each user in data
+    div.fluid.rounded.bg-light.mb-3.p-3
+      .d-flex
+        // Image container with fixed size
+        .image-container
+          img(src=user.profile_pic, alt="Profile Picture", class="img-fluid")
+          
+        // Content container for text
+        .content-container.ml-3
+          h2 #{user.user_name}
+          p Role: #{user.role}
+          p Bio: #{user.bio}
 
-    each user in data
-        div.container.rounded.bg-light
-            h2 #{user.user_name}
-            if user.profile_pic
-                img(src=user.profile_pic, alt="Profile Picture", width="150")
-            p Email: #{user.email}
-            p Phone: #{user.phone_number}
-            p Address: #{user.address}
-            p Role: #{user.role}
-
-    if !data.length
-        p No users found.
+  if !data.length
+    p No users found.
