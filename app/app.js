@@ -45,11 +45,12 @@ app.get("/rides", function(req, res) {
     });
 });
 
-app.get("/usersList", function(req, res) {
+app.get("/social", function(req, res) {
     var sql = 'SELECT * FROM User';
     db.query(sql).then(results => {
         console.log("Fetched Data: ", results); // Log the data to verify its structure
         res.render('usersPage', {
+            currentRoute: '/social',
             title: 'User List',
             heading: 'List of Users',
             data: results
