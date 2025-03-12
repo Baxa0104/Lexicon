@@ -1,11 +1,18 @@
-extends layout 
+extends layout
 
 block content
+  each ride in data
+    div.fluid.rounded.bg-light.mb-3.p-3
+      .d-flex
+        // Image container with fixed size
+        .image-container
+          img(src=ride.ride_pics, alt=ride.short_name, class="img-fluid")
+          
+        // Content container for text
+        .content-container.ml-3
+          h2 #{ride.short_name}
+          p Driver: #{ride.driver_name}
+          p Date of Departure: #{ride.departure_date}
 
-    each ride in data
-        div.container.rounded.bg-light
-            h2 #{ride.origin_address}
-            p Destination: #{ride.destination_address}
-
-    if !data.length
-        p No users found.
+  if !data.length
+    p No rides found.
