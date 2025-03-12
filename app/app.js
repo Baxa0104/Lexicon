@@ -45,6 +45,21 @@ app.get("/rides", function(req, res) {
     });
 });
 
+app.get("/usersList", function(req, res) {
+    var sql = 'SELECT * FROM User';
+    db.query(sql).then(results => {
+        console.log("Fetched Data: ", results); // Log the data to verify its structure
+        res.render('usersPage', {
+            title: 'User List',
+            heading: 'List of Users',
+            data: results
+        });
+    }).catch(err => {
+        console.error("Database Error: ", err);
+        res.status(500).send("Internal Server Error");
+    });
+});
+
 // Start server on port 3000
 app.listen(3000,function(){
     console.log(`Server running at http://127.0.0.1:3000/`);

@@ -1,0 +1,17 @@
+extends layout
+
+block content
+    h1 #{heading}
+
+    each user in data
+        div
+            h2 #{user.user_name}
+            if user.profile_pic
+                img(src=user.profile_pic, alt="Profile Picture", width="150")
+            p Email: #{user.email}
+            p Phone: #{user.phone_number}
+            p Address: #{user.address}
+            p Role: #{user.role}
+
+    if !data.length
+        p No users found.
