@@ -1,0 +1,37 @@
+extends layout 
+
+block content
+    if ride
+        .container.rounded.bg-light.p-4.shadow-sm
+            h1 Ride Details
+
+            .row
+                .col-md-6
+                    p 
+                        strong Origin Address:  
+                        | #{ride.origin_address}
+                    p 
+                        strong Destination Address:  
+                        | #{ride.destination_address}
+                    p 
+                        strong Date & Time:  
+                        | #{ride.date_time}
+                    p 
+                        strong Available Seats:  
+                        | #{ride.available_seats}
+                
+                .col-md-6
+                    p 
+                        strong Driver Name:  
+                        | #{ride.driver_name}
+                    p 
+                        strong Contact:  
+                        | #{ride.driver_contact}
+                    p 
+                        strong Price per Seat:  
+                        | $#{ride.price_per_seat}
+                    
+                    a.btn.btn-success.mt-3(href="/book/#{ride.id}") Book Ride
+    else
+        .container.rounded.bg-light.p-4.shadow-sm.text-center
+            p No ride details found.
