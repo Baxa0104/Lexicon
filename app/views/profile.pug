@@ -1,0 +1,21 @@
+extends layout
+
+block content
+
+    if user
+        .card
+            .card-body
+                h2= user.user_name
+
+                if user.profile_pic
+                    img(src=user.profile_pic, alt="Profile Picture", width="150")
+                p Email: #{user.email}
+                p Phone: #{user.phone_number}
+                p Address: #{user.address}
+                p Bio: #{user.bio}
+                p Role: #{user.role}
+
+
+
+    else
+        p User not found.

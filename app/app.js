@@ -61,6 +61,33 @@ app.get("/social", function(req, res) {
     });
 });
 
+app.get("/user/:id", function(req, res) {
+    const userId = req.params.id;
+
+    console.log("User ID from URL:", userId); // Log the ID to verify it's received
+
+    const sql = 'SELECT * FROM User WHERE user_id = ?';
+
+    db.query(sql, [userId]).then(results => {
+        if (results.length === 0) {
+            console.log("User not found for ID:", userId);
+            return res.status(404).send("User not found.");
+        }
+
+        console.log("Fetched User: ", results[0]);
+
+        res.render('profile', {
+            title: 'User Profile',
+            user: results[0]
+        });
+    }).catch(err => {
+        console.error("Database Error: ", err);
+        res.status(500).send("Internal Server Error");
+    });
+});
+
+
+
 // Start server on port 3000
 app.listen(3000,function(){
     console.log(`Server running at http://127.0.0.1:3000/`);
