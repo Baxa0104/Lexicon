@@ -34,16 +34,16 @@ CREATE TABLE `user` (
 -- Dumping data for table `user`  
 -- Insert 10 users (5 Drivers, 5 Passengers)
 INSERT INTO `user` (`user_id`, `user_name`, `password`, `phone_number`, `email`, `address`, `bio`, `role`, `profile_pic`) VALUES  
-(1, 'Alice Johnson', 'password123', 1234567890, 'alice@example.com', '123 Main St, NY', 'Love to travel!', 'Passenger', 'https://ibb.co/zHx2tJ5D'),  
-(2, 'Bob Smith', 'pass456', 9876543210, 'bob@example.com', '456 Elm St, LA', 'Driver since 2020', 'Driver', 'https://ibb.co/zHx2tJ5D'),  
-(3, 'Charlie Brown', 'charlie789', 1122334455, 'charlie@example.com', '789 Oak St, TX', 'Adventurous soul', 'Passenger', 'https://ibb.co/zHx2tJ5D'),  
-(4, 'David Miller', 'davidpass', 2233445566, 'david@example.com', '321 Pine St, SF', 'Ride-sharing enthusiast', 'Driver', 'https://ibb.co/zHx2tJ5D'),  
-(5, 'Emma Davis', 'emma123', 3344556677, 'emma@example.com', '654 Cedar St, FL', 'Always on the go!', 'Passenger', 'https://ibb.co/zHx2tJ5D'),  
-(6, 'Frank Wilson', 'frankpass', 4455667788, 'frank@example.com', '987 Birch St, WA', 'Long-distance driver', 'Driver', 'https://ibb.co/zHx2tJ5D'),  
-(7, 'Grace Thomas', 'grace456', 5566778899, 'grace@example.com', '159 Maple St, CO', 'Loves road trips!', 'Passenger', 'https://ibb.co/zHx2tJ5D'),  
-(8, 'Henry Walker', 'henrypass', 6677889900, 'henry@example.com', '753 Redwood St, AZ', 'Ride-sharing pro', 'Driver', 'https://ibb.co/zHx2tJ5D'),  
-(9, 'Isabel Scott', 'isabelpass', 7788990011, 'isabel@example.com', '951 Willow St, OR', 'Exploring new cities!', 'Passenger', 'https://ibb.co/zHx2tJ5D'),  
-(10, 'Jack Harris', 'jackpass', 8899001122, 'jack@example.com', '852 Spruce St, NV', 'Nighttime driver', 'Driver', 'https://ibb.co/zHx2tJ5D');  
+(1, 'Alice Johnson', 'password123', 1234567890, 'alice@example.com', '123 Main St, NY', 'Love to travel!', 'Passenger', 'https://i.ibb.co/Z6Lzh5WM/istockphoto-1368424494-612x612.jpg'),  
+(2, 'Bob Smith', 'pass456', 9876543210, 'bob@example.com', '456 Elm St, LA', 'Driver since 2020', 'Driver', 'https://i.ibb.co/7tTy7Vpc/0-Ggt-Xwliw-AO6-QURi.jpg'),  
+(3, 'Charlie Brown', 'charlie789', 1122334455, 'charlie@example.com', '789 Oak St, TX', 'Adventurous soul', 'Passenger', 'https://i.ibb.co/pr1vdByp/pexels-andrewperformance1-697509.jpg'),  
+(4, 'David Miller', 'davidpass', 2233445566, 'david@example.com', '321 Pine St, SF', 'Ride-sharing enthusiast', 'Driver', 'https://i.ibb.co/6cnJPJfs/images.jpg'),  
+(5, 'Emma Davis', 'emma123', 3344556677, 'emma@example.com', '654 Cedar St, FL', 'Always on the go!', 'Passenger', 'https://i.ibb.co/6cnJPJfs/images.jpg'),  
+(6, 'Frank Wilson', 'frankpass', 4455667788, 'frank@example.com', '987 Birch St, WA', 'Long-distance driver', 'Driver', 'https://i.ibb.co/6cnJPJfs/images.jpg'),  
+(7, 'Grace Thomas', 'grace456', 5566778899, 'grace@example.com', '159 Maple St, CO', 'Loves road trips!', 'Passenger', 'https://i.ibb.co/6cnJPJfs/images.jpg'),  
+(8, 'Henry Walker', 'henrypass', 6677889900, 'henry@example.com', '753 Redwood St, AZ', 'Ride-sharing pro', 'Driver', 'https://i.ibb.co/6cnJPJfs/images.jpg'),  
+(9, 'Isabel Scott', 'isabelpass', 7788990011, 'isabel@example.com', '951 Willow St, OR', 'Exploring new cities!', 'Passenger', 'https://i.ibb.co/6cnJPJfs/images.jpg'),  
+(10, 'Jack Harris', 'jackpass', 8899001122, 'jack@example.com', '852 Spruce St, NV', 'Nighttime driver', 'Driver', 'https://i.ibb.co/6cnJPJfs/images.jpg');  
 
 -- --------------------------------------------------------  
 -- Table structure for `ride`  
