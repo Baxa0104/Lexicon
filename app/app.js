@@ -49,7 +49,7 @@ app.get("/social", function(req, res) {
     var sql = 'SELECT * FROM User';
     db.query(sql).then(results => {
         console.log("Fetched Data: ", results); // Log the data to verify its structure
-        res.render('usersPage', {
+        res.render('social', {
             currentRoute: '/social',
             title: 'User List',
             heading: 'List of Users',
