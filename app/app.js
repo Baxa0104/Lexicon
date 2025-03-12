@@ -45,14 +45,14 @@ app.get("/rides", function(req, res) {
 });
 
 app.get("/social", function(req, res) {
-    var sql = 'SELECT * FROM User';
+    var sql = 'SELECT * FROM User';  // Select all users from the user table
     db.query(sql).then(results => {
         console.log("Fetched Data: ", results); // Log the data to verify its structure
         res.render('social', {
             currentRoute: '/social',
             title: 'User List',
             heading: 'List of Users',
-            data: results
+            data: results // Data sent to the corresponding Pug view for rendering
         });
     }).catch(err => {
         console.error("Database Error: ", err);
