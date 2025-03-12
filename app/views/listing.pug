@@ -4,8 +4,9 @@ block content
 
     each ride in data
         div.container.rounded.bg-light
-            h2 #{ride.origin_address}
-            p Destination: #{ride.destination_address}
+            h2 #{ride.short_name}
+            p Driver: #{ride.driver_name}
+            p Date of Departure: #{ride.departure_date}
 
     if !data.length
         p No users found.
