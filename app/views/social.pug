@@ -1,38 +1,47 @@
 extends layout
 
 block content
-  .container
-    .row.justify-content-center
-      each user in data
-        .col-12.mb-4
-          .card.shadow-lg.w-100(style="height: 150px;")
-            .row.no-gutters.h-100
-              // Profile Image (Fixed Size, No Flexible Resizing)
-              .col-md-4
-                if user.profile_pic
-                  img.card-img-left(
-                    src=user.profile_pic, 
-                    alt="Profile Picture", 
-                    class="img-fluid", 
-                    style="object-fit: cover; height: 100%; width: 100%; overflow: hidden;"
-                  )
-                else
-                  div.card-img-left.d-flex.align-items-center.justify-content-center.bg-light(
-                    style="height: 100%;"
-                  )
-                    i.bi.bi-person-circle.display-1.text-secondary
+    .container
+        .row.justify-content-center
 
-              // Content (Fixed Height, Content Centered Vertically)
-              .col-md-8.d-flex.align-items-center
-                .card-body.text-left
-                  h3 
-                    a.namesSocial.text-primary.text-decoration-none(href=`/social/${user.user_id}`) #{user.user_name}
+            form(method="GET" action="/social")
+                label(for="category").mb-2 Select Category:
+                select#category(name="category" class="form-control" onchange="this.form.submit()")
+                    option(value="") All Categories
+                    option(value="Driver" selected=(category === 'Driver')) Driver
+                    option(value="Passenger" selected=(category === 'Passenger')) Passenger
 
-                  p.mb-2 
-                    strong Role:  
-                    | #{user.role}
-                  p.text-muted 
-                    | #{user.bio || "No bio available"}
+            each user in data
 
-  if !data.length
-    p.text-center No users found.
+                .col-12.mb-4
+                    .card.shadow-lg.w-100(style="height: 150px;")
+                        .row.no-gutters.h-100
+                            // Profile Image (Fixed Size, No Flexible Resizing)
+                            .col-md-4
+                                if user.profile_pic
+                                    img.card-img-left(
+                                        src=user.profile_pic, 
+                                        alt="Profile Picture", 
+                                        class="img-fluid", 
+                                        style="object-fit: cover; height: 100%; width: 100%; overflow: hidden;"
+                                    )
+                                else
+                                    div.card-img-left.d-flex.align-items-center.justify-content-center.bg-light(
+                                        style="height: 100%;"
+                                    )
+                                        i.bi.bi-person-circle.display-1.text-secondary
+
+                            // Content (Fixed Height, Content Centered Vertically)
+                            .col-md-8.d-flex.align-items-center
+                                .card-body.text-left
+                                    h3 
+                                        a.namesSocial.text-primary.text-decoration-none(href=`/social/${user.user_id}`) #{user.user_name}
+
+                                    p.mb-2 
+                                        strong Role:  
+                                        | #{user.role}
+                                    p.text-muted 
+                                        | #{user.bio || "No bio available"}
+
+    if !data.length
+        p.text-center No users found.
