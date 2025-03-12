@@ -1,0 +1,39 @@
+extends layout
+
+block content
+  .container
+    .row.justify-content-center
+      each ride in data
+        .col-12.mb-4
+          .card.shadow-lg.w-100(style="height: 150px;")
+            .row.no-gutters.h-100
+              // Ride Image (Fixed Size, No Flexible Resizing)
+              .col-md-4
+                if ride.ride_pics
+                  img.card-img-left(
+                    src=ride.ride_pics, 
+                    alt=ride.short_name, 
+                    class="img-fluid", 
+                    style="object-fit: cover; height: 100%; width: 100%; overflow: hidden;"
+                  )
+                else
+                  div.card-img-left.d-flex.align-items-center.justify-content-center.bg-light(
+                    style="height: 100%;"
+                  )
+                    i.bi.bi-image.display-1.text-secondary
+
+              // Content (Fixed Height, Content Centered Vertically)
+              .col-md-8.d-flex.align-items-center
+                .card-body.text-left(style="--bs-card-spacer-y: 0;") 
+                  h3 
+                    a.text-primary.text-decoration-none(href=`/rides/${ride.ride_id}`) #{ride.short_name}
+
+                  p.mb-2 
+                    strong Driver:  
+                    | #{ride.driver_name}
+                  p.text-muted 
+                    strong Date of Departure:  
+                    | #{ride.departure_date}
+
+  if !data.length
+    p.text-center No rides found.

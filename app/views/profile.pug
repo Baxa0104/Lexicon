@@ -1,0 +1,49 @@
+extends layout
+
+block content
+    h1.text-left User Profile
+
+    .fluid
+        .row.justify-content-center
+            .col-12
+                .card.shadow-lg.w-100.p-4
+                    // Profile Image
+                    if user.profile_pic
+                        img.card-img-top(
+                            src=user.profile_pic, 
+                            alt="Profile Picture", 
+                            class="img-fluid", 
+                            style="height: 400px; object-fit: cover; width: 100%;"
+                        )
+                    else
+                        div.card-img-top.d-flex.align-items-center.justify-content-center.bg-light(
+                            style="height: 400px;"
+                        )
+                            i.bi.bi-person-circle.display-1.text-secondary
+
+                    .card-body
+                        // Centered Name
+                        h2.text-primary.text-center #{user.user_name}
+                        p.text-muted.text-center.fs-5 #{user.bio || "No bio available"}
+
+                        hr
+
+                        // Left-aligned details with larger font
+                        .text-left.fs-5
+                            p.mb-3 
+                                strong Email:  
+                                | #{user.email}
+                            p.mb-3 
+                                strong Phone:  
+                                | #{user.phone_number || "N/A"}
+                            p.mb-3 
+                                strong Address:  
+                                | #{user.address || "N/A"}
+                            p.mb-3 
+                                strong Role:  
+                                | #{user.role}
+
+                        // Left-aligned buttons with spacing
+                        .text-left.mt-4
+                            a.btn.btn-primary.btn-lg.me-3(href="/account/edit").disabled Edit Profile
+                            a.btn.btn-secondary.btn-lg(href="/account/edit").disabled Change Password
