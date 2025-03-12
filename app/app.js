@@ -60,7 +60,7 @@ app.get("/social", function(req, res) {
     });
 });
 
-app.get("/user/:id", function(req, res) {
+app.get("/social/:id", function(req, res) {
     const userId = req.params.id;
 
     console.log("User ID from URL:", userId); // Log the ID to verify it's received
