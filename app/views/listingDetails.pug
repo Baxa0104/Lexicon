@@ -2,36 +2,57 @@ extends layout
 
 block content
     if ride
-        .container.rounded.bg-light.p-4.shadow-sm
-            h1 Ride Details
+        .container
+            .row.justify-content-center
+                .col-12
+                    .card.shadow-lg.w-100.p-4
+                        // Ride Image (If Available)
+                        if ride.ride_pics
+                            img.card-img-top(
+                                src=ride.ride_pics, 
+                                alt="Ride Image", 
+                                class="img-fluid", 
+                                style="height: 400px; object-fit: cover; width: 100%;"
+                            )
+                        else
+                            div.card-img-top.d-flex.align-items-center.justify-content-center.bg-light(
+                                style="height: 400px;"
+                            )
+                                i.bi.bi-car-front.display-1.text-secondary
 
-            .row
-                .col-md-6
-                    p 
-                        strong Origin Address:  
-                        | #{ride.origin_address}
-                    p 
-                        strong Destination Address:  
-                        | #{ride.destination_address}
-                    p 
-                        strong Date & Time:  
-                        | #{ride.date_time}
-                    p 
-                        strong Available Seats:  
-                        | #{ride.available_seats}
-                
-                .col-md-6
-                    p 
-                        strong Driver Name:  
-                        | #{ride.driver_name}
-                    p 
-                        strong Contact:  
-                        | #{ride.driver_contact}
-                    p 
-                        strong Price per Seat:  
-                        | $#{ride.price_per_seat}
-                    
-                    a.btn.btn-success.mt-3(href="/book/#{ride.id}") Book Ride
+                        .card-body
+                            // Centered Ride Title
+                            h2.text-primary.text-center #{ride.short_name}
+                            p.text-muted.text-center.fs-5 #{ride.ride_details || "No description available"}
+
+                            hr
+
+                            // Left-aligned details with larger font
+                            .text-left.fs-5
+                                p.mb-3 
+                                    strong Origin Address:  
+                                    | #{ride.origin_address}
+                                p.mb-3 
+                                    strong Destination Address:  
+                                    | #{ride.destination_address}
+                                p.mb-3 
+                                    strong Date & Time:  
+                                    | #{ride.departure_date} & #{ride.departure_time}
+                                p.mb-3 
+                                    strong Available Seats:  
+                                    | #{ride.available_seats}
+                                p.mb-3 
+                                    strong Driver Name:  
+                                    | #{ride.user_name}
+                                p.mb-3 
+                                    strong Phone Number:  
+                                    | #{ride.phone_number}
+                                p.mb-3 
+                                    strong Email:  
+                                    | #{ride.email}
+                            // Left-aligned button with spacing
+                            .text-left.mt-4
+                                a.btn.btn-success.btn-lg.me-3(href=`/book/#{ride.id}`).disabled Book Ride
     else
         .container.rounded.bg-light.p-4.shadow-sm.text-center
             p No ride details found.

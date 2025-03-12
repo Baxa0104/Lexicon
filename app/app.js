@@ -28,7 +28,7 @@ app.get("/dashboard", function(req, res) {
 });
 
 app.get("/rides", function(req, res) {
-    var sql = 'SELECT r.short_name, r.ride_pics, r.departure_date, u.user_name AS driver_name FROM ride r JOIN user u ON r.driver_id = u.user_id WHERE u.role = "Driver"';
+    var sql = 'SELECT r.ride_id, r.short_name, r.ride_pics, r.departure_date, u.user_name AS driver_name FROM ride r JOIN user u ON r.driver_id = u.user_id WHERE u.role = "Driver"';
 
     db.query(sql).then(results => {
         console.log("Fetched Data: ", results);
@@ -78,6 +78,32 @@ app.get("/social/:id", function(req, res) {
         res.render('profile', {
             title: 'User Profile',
             user: results[0]
+        });
+    }).catch(err => {
+        console.error("Database Error: ", err);
+        res.status(500).send("Internal Server Error");
+    });
+});
+
+
+app.get("/rides/:id", function(req, res) {
+    const rideId = req.params.id;
+
+    console.log("Ride ID from URL:", rideId); // Log the ID to verify it's received
+
+    const sql = 'SELECT * FROM ride r JOIN user u ON r.driver_id = u.user_id WHERE u.role = "Driver" AND r.ride_id = ?';
+
+    db.query(sql, [rideId]).then(results => {
+        if (results.length === 0) {
+            console.log("Ride not found for ID:", rideId);
+            return res.status(404).send("Ride not found.");
+        }
+
+        console.log("Fetched Ride: ", results[0]);
+
+        res.render('listingDetails', {
+            title: 'Ride Details',
+            ride: results[0]
         });
     }).catch(err => {
         console.error("Database Error: ", err);
