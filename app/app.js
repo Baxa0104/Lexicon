@@ -21,12 +21,14 @@ app.get("/", function(req, res) {
     res.redirect('/dashboard');
 });
 
+// Dashboard Route. Redirected from root route
 app.get("/dashboard", function(req, res) {
     res.render('layout', {
     currentRoute: '/dashboard'
     });
 });
 
+// Rides listing route.
 app.get("/rides", function(req, res) {
     var sql = 'SELECT r.ride_id, r.short_name, r.ride_pics, r.departure_date, u.user_name AS driver_name FROM ride r JOIN user u ON r.driver_id = u.user_id WHERE u.role = "Driver"';
 
@@ -44,15 +46,23 @@ app.get("/rides", function(req, res) {
     });
 });
 
+// Users listing route.
 app.get("/social", function(req, res) {
     var sql = 'SELECT * FROM User';  // Select all users from the user table
-    db.query(sql).then(results => {
+    var category = req.query.category;
+
+    if(category){
+        sql += ' WHERE role = ?';
+    }
+
+    db.query(sql, category ? [category] : []).then(results => {
         console.log("Fetched Data: ", results); // Log the data to verify its structure
         res.render('social', {
             currentRoute: '/social',
             title: 'User List',
             heading: 'List of Users',
-            data: results // Data sent to the corresponding Pug view for rendering
+            data: results, // Data sent to the corresponding Pug view for rendering
+            category: category
         });
     }).catch(err => {
         console.error("Database Error: ", err);
@@ -60,6 +70,7 @@ app.get("/social", function(req, res) {
     });
 });
 
+// Dynamic route. Fetches user Profiles
 app.get("/social/:id", function(req, res) {
     const userId = req.params.id;
 
@@ -86,6 +97,7 @@ app.get("/social/:id", function(req, res) {
 });
 
 
+// Dynamic Route. Fetches Ride Details
 app.get("/rides/:id", function(req, res) {
     const rideId = req.params.id;
 
