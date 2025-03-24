@@ -1,6 +1,6 @@
 # This is a basic workflow that is triggered by a push to the deploy branch
 
-name: On push to deploy branch
+name: Master Branch Test
 
 # Controls when the action will run. Triggered by push to deploy branch
 on:

@@ -1,7 +1,7 @@
 
 # This is a workflow that is manually triggered to test the docker build
 
-name: Manual workflow for docker
+name: Docker Test
 
 # Controls when the action will run. Triggered by push to deploy
 on:
