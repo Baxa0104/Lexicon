@@ -5,6 +5,7 @@ name: Manual workflow for docker
 
 # Controls when the action will run. Triggered by push to deploy
 on:
+  workflow_dispatch:
   push:
     branches:
       - setup/actions
@@ -30,7 +31,7 @@ jobs:
       - name: check dir
         run: ls
       - name: Create the .env file
-        run: echo "$" > .env
+        run: echo > .env
       - name: Check
         run: cat .env
       - name: Install dependencies
