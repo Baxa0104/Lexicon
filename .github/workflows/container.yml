@@ -3,7 +3,7 @@
 
 name: Manual workflow for docker
 
-# Controls when the action will run. Triggered by push to deploy branch
+# Controls when the action will run. Triggered by push to deploy
 on:
   push:
     branches:
