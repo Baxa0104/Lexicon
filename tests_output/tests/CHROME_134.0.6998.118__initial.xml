@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites errors="2"
+            failures="0"
+            tests="1">
+
+  <testsuite name="Basic pages" id="tests.initial"
+    errors="2" failures="0" hostname="" package="initial" skipped="0"
+    tests="1" time="12.96" timestamp="">
+  
+    <testcase name="check the front page loads" classname="Basic pages" time="12.95" assertions="0">
+    <error type="error"><![CDATA[
+    Error
+    at DescribeInstance.&lt;anonymous&gt; (C:\Users\sohibnab\Lexicon\tests\initial.js:4:10)
+    at Context.call (C:\Users\sohibnab\Lexicon\node_modules\nightwatch\lib\testsuite\context.js:528:43)
+    at TestCase.run (C:\Users\sohibnab\Lexicon\node_modules\nightwatch\lib\testsuite\testcase.js:58:31)
+    at Runnable.__runFn (C:\Users\sohibnab\Lexicon\node_modules\nightwatch\lib\testsuite\index.js:842:80)
+    at Runnable.run (C:\Users\sohibnab\Lexicon\node_modules\nightwatch\lib\testsuite\runnable.js:126:21)
+    at TestSuite.executeRunnable (C:\Users\sohibnab\Lexicon\node_modules\nightwatch\lib\testsuite\index.js:1003:49)
+    at TestSuite.handleRunnable (C:\Users\sohibnab\Lexicon\node_modules\nightwatch\lib\testsuite\index.js:1018:33)
+    at C:\Users\sohibnab\Lexicon\node_modules\nightwatch\lib\testsuite\index.js:842:21
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async DefaultRunner.runTestSuite (C:\Users\sohibnab\Lexicon\node_modules\nightwatch\lib\runner\test-runners\default.js:83:7)
+    ]]></error>
+    
+    </testcase>
+  
+
+  
+    <system-err>
+       WebDriverError:   Unable to navigate to url http://localhost:3000/dashboard: unknown error: net::ERR_CONNECTION_REFUSED
+  (Session info: chrome=134.0.6998.118)
+ WebDriverError
+   Error while running &#34;navigateTo&#34; command: [WebDriverError] Unable to navigate to url http://localhost:3000/dashboard: unknown error: net::ERR_CONNECTION_REFUSED
+  (Session info: chrome=134.0.6998.118)
+
+    Error location:
+    C:\Users\sohibnab\Lexicon\tests\initial.js:4
+    ––––––––––––––––––––––––––––––––––––––––––––
+     2 |     it(&#39;check the front page loads&#39;, function(browser) {
+     3 |       browser
+     4 |         .navigateTo(&#39;http://localhost:3000/dashboard&#39;) 
+     5 |         .waitForElementVisible(&#39;body&#39;)
+     6 |     }); 
+    ––––––––––––––––––––––––––––––––––––––––––––
+
+ NoSuchWindowError
+   no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=134.0.6998.118)
+    </system-err>
+  
+
+    
+
+  
+  </testsuite>
+</testsuites>
