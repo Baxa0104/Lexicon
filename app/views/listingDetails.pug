@@ -3,11 +3,11 @@ extends layout
 block content
     .container.d-flex.flex-column.align-items-center(style="max-width: 1000px; width: 100%;")
 
-        // Ride Details Section (Full Width)
+        // Ride Details Section (Card with Image on the Left)
         .card.shadow-lg.bg-white.rounded.p-4.mb-4.w-100
             .row.g-4
-                // Ride Image Section
-                .col-md-4.d-flex.flex-column.align-items-center
+                // Ride Image Section on Left (No Stretching, Properly Resized)
+                .col-md-4.d-flex.align-items-center
                     if ride.ride_pics
                         img.shadow-sm(
                             src=ride.ride_pics, 
@@ -21,46 +21,50 @@ block content
                         )
                             i.bi.bi-car-front.display-1.text-secondary
 
-                // Ride Info Section
+                // Ride Info Section on Right
                 .col-md-8
-                    h2.text-primary #{ride.short_name}
-                    p.text-muted #{ride.ride_details || "No description available"}
+                    h2.text-primary.mb-3 #{ride.short_name} 🚗
+                    p.text-muted.mb-4 #{ride.ride_details || "No description available"} 
 
                     hr
 
-                    .row
+                    .row.g-3
                         .col-md-6
                             p.mb-2 
                                 strong Origin Address:  
-                                | #{ride.origin_address}
+                                | #{ride.origin_address} 🏠
+                        .col-md-6
                             p.mb-2 
                                 strong Destination Address:  
-                                | #{ride.destination_address}
+                                | #{ride.destination_address} 🏖️
+                    .row.g-3
                         .col-md-6
                             p.mb-2 
                                 strong Date & Time:  
-                                | #{ride.departure_date} & #{ride.departure_time}
+                                | #{ride.departure_date} & #{ride.departure_time} 🕒
+                        .col-md-6
                             p.mb-2 
                                 strong Available Seats:  
-                                | #{ride.available_seats}
+                                | #{ride.available_seats} 🪑
 
                     // Driver Details
-                    .mt-3
+                    .mt-4
                         p.mb-2 
                             strong Driver Name:  
-                            | #{ride.user_name}
+                            | #{ride.user_name} 👤
                         p.mb-2 
                             strong Phone:  
-                            | #{ride.phone_number || "N/A"}
+                            | #{ride.phone_number || "N/A"} 📞
                         p.mb-2 
                             strong Email:  
-                            | #{ride.email}
+                            | #{ride.email} 📧
 
-                    // Action Buttons (Centered)
-                    .d-flex.mt-4.flex-wrap.gap-2
-                        a.btn.btn-success.disabled(href=`/book/#{ride.id}`) Book Ride
+                    // Action Buttons (No Justify Content)
+                    .d-flex.mt-4.flex-wrap.gap-3
+                        a.btn.btn-success.disabled(href=`/book/#{ride.id}`) 📅 Book Ride
+                        a.btn.btn-info(href=`/social/${ride.user_id}`) 💬 Contact Driver
 
         // No Ride Found Message
         if !ride
             .container.rounded.bg-light.p-4.shadow-sm.text-center
-                p No ride details found.
+                p No ride details found. 😔

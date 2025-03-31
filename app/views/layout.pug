@@ -11,44 +11,56 @@ html(lang="en")
 
         title PeerRide
 
-    body 
+    body
+        // Toggle button for small screens
+        button#sidebarToggle.navbar-toggler(type="button")
+            i.bi.bi-list
+
         // Wrapper using Bootstrap flexbox (Sidebar + Content)
         .d-flex
             // Sidebar (Fixed)
-            .d-flex.flex-column.flex-shrink-0.p-3.bg-white.shadow-sm.rounded.vh-100.position-fixed(style="width: 250px; border-right: 1px solid #ddd; top: 0; height: 100vh;")
-                a.d-flex.align-items-center.mb-3.mb-md-0.me-md-auto.link-dark.text-decoration-none(href="/")
-                    span.fs-4 PeerRide
-                hr
+            #sidebar.d-lg-flex.flex-column.flex-shrink-0.p-3.bg-white.shadow-sm.rounded.vh-100.position-fixed
+                .flex-column.h-100(id="sidebarContent")
+                    
+                    // Close button inside sidebar (only visible on mobile)
+                    button#closeSidebar.navbar-toggler(type="button")
+                        i.bi.bi-x-lg
 
-                ul.nav.flex-column.mb-auto
-                    li.nav-item
-                        a.nav-link.d-flex.align-items-center.rounded.px-3.py-2.text-dark(class=currentRoute == '/dashboard' ? 'active bg-primary text-white' : '', href="/dashboard")
-                            i.bi.bi-speedometer.me-2
-                            | Dashboard
-                    li.nav-item
-                        a.nav-link.d-flex.align-items-center.rounded.px-3.py-2.text-muted.disabled
-                            i.bi.bi-car-front-fill.me-2
-                            | Ride Offer
-                    li.nav-item
-                        a.nav-link.d-flex.align-items-center.rounded.px-3.py-2.text-dark(class=currentRoute == '/rides' ? 'active bg-primary text-white' : '', href="/rides")
-                            i.bi.bi-bag-check-fill.me-2
-                            | Ride Request
-                    li.nav-item
-                        a.nav-link.d-flex.align-items-center.rounded.px-3.py-2.text-muted.disabled
-                            i.bi.bi-hourglass-split.me-2
-                            | History
-                    li.nav-item
-                        a.nav-link.d-flex.align-items-center.rounded.px-3.py-2.text-dark(class=currentRoute == '/social' ? 'active bg-primary text-white' : '', href="/social")
-                            i.bi.bi-chat-left-fill.me-2
-                            | Social
-                hr
-                a.nav-link.d-flex.align-items-center.text-muted.disabled
-                    i.bi.bi-person-fill.me-2
-                    | Account
+                    a.d-flex.align-items-center.mb-3.mb-md-0.me-md-auto.link-dark.text-decoration-none(href="/")
+                        span.fs-4 PeerRide
+                    hr
+
+                    ul.nav.flex-column.mb-auto
+                        li.nav-item
+                            a.nav-link.d-flex.align-items-center.rounded.px-3.py-2.text-dark(class=currentRoute == '/dashboard' ? 'active bg-primary text-white' : '', href="/dashboard")
+                                i.bi.bi-speedometer.me-2
+                                | Dashboard
+                        li.nav-item
+                            a.nav-link.d-flex.align-items-center.rounded.px-3.py-2.text-muted.disabled
+                                i.bi.bi-car-front-fill.me-2
+                                | Ride Offer
+                        li.nav-item
+                            a.nav-link.d-flex.align-items-center.rounded.px-3.py-2.text-dark(class=currentRoute == '/rides' ? 'active bg-primary text-white' : '', href="/rides")
+                                i.bi.bi-bag-check-fill.me-2
+                                | Ride Request
+                        li.nav-item
+                            a.nav-link.d-flex.align-items-center.rounded.px-3.py-2.text-muted.disabled
+                                i.bi.bi-hourglass-split.me-2
+                                | History
+                        li.nav-item
+                            a.nav-link.d-flex.align-items-center.rounded.px-3.py-2.text-dark(class=currentRoute == '/social' ? 'active bg-primary text-white' : '', href="/social")
+                                i.bi.bi-chat-left-fill.me-2
+                                | Social
+                    hr
+                    a.nav-link.d-flex.align-items-center.text-muted.disabled
+                        i.bi.bi-person-fill.me-2
+                        | Account
 
             // Main Content Wrapper
-            .flex-grow-1.bg-light(style="min-height: 100vh; margin-left: 250px; padding: 24px; display: flex; flex-direction: column; align-items: center;")
-
+            .main-content.bg-light
                 // Main Content Area
                 .container.p-4.bg-white.shadow-sm.rounded(style="max-width: 1000px; width: 100%;")
                     block content
+
+        // Include JS for sidebar toggle
+        script(src="/js/sidebar.js")
