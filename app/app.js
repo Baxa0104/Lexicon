@@ -131,7 +131,7 @@ app.get("/rides/:id", function(req, res) {
 
     console.log("Ride ID from URL:", rideId); // Log the ID to verify it's received
 
-    const sql = 'SELECT * FROM ride r JOIN user u ON r.driver_id = u.user_id WHERE u.role = "Driver" AND r.ride_id = ?';
+    const sql = `SELECT * FROM ride r JOIN user u ON r.driver_id = u.user_id WHERE u.role = 'Driver' AND r.ride_id = ?`;
     const apiKey = process.env.GRAPHHOPPER_API_KEY
 
     db.query(sql, [rideId]).then(results => {
