@@ -33,7 +33,7 @@ app.get("/rides", function (req, res) {
                       u.user_name AS driver_name 
                FROM ride r 
                JOIN user u ON r.driver_id = u.user_id 
-               WHERE u.role = "Driver"`;
+               WHERE u.role = 'Driver'`;
 
     let params = [];
     let search = req.query.search;
@@ -62,7 +62,7 @@ app.get("/rides", function (req, res) {
 
 // Users listing route with search and category filtering
 app.get("/social", function (req, res) {
-    let sql = 'SELECT * FROM User';
+    let sql = 'SELECT * FROM user';
     let params = [];
     let category = req.query.category;
     let search = req.query.search;
@@ -104,7 +104,7 @@ app.get("/social/:id", function(req, res) {
 
     console.log("User ID from URL:", userId); // Log the ID to verify it's received
 
-    const sql = 'SELECT * FROM User WHERE user_id = ?';
+    const sql = 'SELECT * FROM user WHERE user_id = ?';
 
     db.query(sql, [userId]).then(results => {
         if (results.length === 0) {
