@@ -1,0 +1,44 @@
+extends layout
+
+block content
+    // Search & Header Bar (Separate from the Grid)
+    .bg-white.shadow-sm.rounded.p-3.mb-4(style="max-width: 1000px; width: 100%; margin: 0 auto;")
+        .d-flex.justify-content-between.align-items-center.flex-wrap
+
+            // Page Title (Left)
+            h4.text-dark.mb-0 Dashboard
+
+            // Search Bar (Right)
+            form.d-flex.align-items-center(method="GET" action="/dashboard")
+                input.form-control.me-2(style="width: 250px;" type="search" name="search" placeholder="Search dashboard content...")
+
+    .container(style="max-width: 1000px; width: 100%;")
+        // Dashboard Content Section
+        .row
+            .col-12
+                .card.shadow-sm.bg-white.rounded.w-100.p-4
+                    h5.text-primary Welcome to Your Dashboard
+                    p.text-muted Here you can manage your rides, requests, and account settings.
+
+        // Example Dashboard Sections (Can be Modified)
+        .row.mt-4
+            .col-6.col-md-4.mb-4
+                .card.shadow-sm.bg-white.rounded.w-100
+                    .card-body.text-center
+                        i.bi.bi-speedometer2.display-4.text-primary
+                        h6.mt-2 Dashboard Overview
+                        p.text-muted.small View your latest stats.
+
+            .col-6.col-md-4.mb-4
+                .card.shadow-sm.bg-white.rounded.w-100
+                    .card-body.text-center
+                        i.bi.bi-car-front-fill.display-4.text-primary
+                        h6.mt-2 Your Rides
+                        p.text-muted.small Manage your ride requests and offers.
+
+            .col-6.col-md-4.mb-4
+                .card.shadow-sm.bg-white.rounded.w-100
+                    .card-body.text-center
+                        i.bi.bi-chat-left-text.display-4.text-primary
+                        h6.mt-2 Messages
+                        p.text-muted.small Check your latest conversations.

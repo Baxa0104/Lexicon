@@ -23,52 +23,80 @@ app.get("/", function(req, res) {
 
 // Dashboard Route. Redirected from root route
 app.get("/dashboard", function(req, res) {
-    res.render('layout', {
+    res.render('dashboard', {
     currentRoute: '/dashboard'
     });
 });
 
-// Rides listing route.
-app.get("/rides", function(req, res) {
-    var sql = 'SELECT r.ride_id, r.short_name, r.ride_pics, r.departure_date, u.user_name AS driver_name FROM ride r JOIN user u ON r.driver_id = u.user_id WHERE u.role = "Driver"';
+app.get("/rides", function (req, res) {
+    let sql = `SELECT r.ride_id, r.short_name, r.ride_pics, r.departure_date, r.destination_address,
+                      u.user_name AS driver_name 
+               FROM ride r 
+               JOIN user u ON r.driver_id = u.user_id 
+               WHERE u.role = "Driver"`;
 
-    db.query(sql).then(results => {
-        console.log("Fetched Data: ", results);
+    let params = [];
+    let search = req.query.search;
+   
 
+    if (search) {
+        sql += ` AND (u.user_name LIKE ? OR r.destination_address LIKE ?)`;
+        params.push(`%${search}%`, `%${search}%`);
+    }
+
+    console.log("SQL Query:", sql);
+    console.log("Params:", params);
+
+    db.query(sql, params).then(results => {
         res.render('listing', {
             currentRoute: '/rides',
             title: 'Ride Request',
-            data: results
+            data: results,
+            search: search
         });
     }).catch(err => {
-        console.error("Database Error: ", err);
+        console.error("Database Error:", err);
         res.status(500).send("Internal Server Error");
     });
 });
 
-// Users listing route.
-app.get("/social", function(req, res) {
-    var sql = 'SELECT * FROM User';  // Select all users from the user table
-    var category = req.query.category;
+// Users listing route with search and category filtering
+app.get("/social", function (req, res) {
+    let sql = 'SELECT * FROM User';
+    let params = [];
+    let category = req.query.category;
+    let search = req.query.search;
 
-    if(category){
+    // Apply category filter
+    if (category) {
         sql += ' WHERE role = ?';
+        params.push(category);
     }
 
-    db.query(sql, category ? [category] : []).then(results => {
-        console.log("Fetched Data: ", results); // Log the data to verify its structure
+    // Apply search filter (Matches username or bio)
+    if (search) {
+        sql += category ? ' AND' : ' WHERE';
+        sql += ' (user_name LIKE ? OR bio LIKE ?)';
+        params.push(`%${search}%`, `%${search}%`);
+    }
+
+    // Execute query with parameters
+    db.query(sql, params).then(results => {
+        console.log("Fetched Data: ", results); // Debugging log
         res.render('social', {
             currentRoute: '/social',
             title: 'User List',
             heading: 'List of Users',
-            data: results, // Data sent to the corresponding Pug view for rendering
-            category: category
+            data: results,
+            category: category,
+            search: search // Pass search value to keep it in the input field
         });
     }).catch(err => {
         console.error("Database Error: ", err);
         res.status(500).send("Internal Server Error");
     });
 });
+
 
 // Dynamic route. Fetches user Profiles
 app.get("/social/:id", function(req, res) {
@@ -104,6 +132,7 @@ app.get("/rides/:id", function(req, res) {
     console.log("Ride ID from URL:", rideId); // Log the ID to verify it's received
 
     const sql = 'SELECT * FROM ride r JOIN user u ON r.driver_id = u.user_id WHERE u.role = "Driver" AND r.ride_id = ?';
+    const apiKey = process.env.GRAPHHOPPER_API_KEY
 
     db.query(sql, [rideId]).then(results => {
         if (results.length === 0) {
@@ -115,7 +144,8 @@ app.get("/rides/:id", function(req, res) {
 
         res.render('listingDetails', {
             title: 'Ride Details',
-            ride: results[0]
+            ride: results[0],
+            apiKey: apiKey
         });
     }).catch(err => {
         console.error("Database Error: ", err);

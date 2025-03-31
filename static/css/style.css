@@ -1,15 +1,3 @@
-/* Fixed Sidebar (visible only on large screens) */
-.sidebar {
-    background-color: white;
-    border-right: 1px solid black;
-}
-
-.btn.active{
-    background-color: #ffbd03 !important;
-    outline: #ffbd03 !important;
-}
-
-.namesSocial{
-    color: black !important;
-    text-decoration-color: black !important;
+.custom-margin{
+    margin-top: 40px !important;
 }

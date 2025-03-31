@@ -1,47 +1,59 @@
 extends layout
 
 block content
-    .container
-        .row.justify-content-center
+    // Search & Header Bar
+    .bg-white.shadow-sm.rounded.p-3.mb-4(style="max-width: 1000px; width: 100%; margin: 0 auto;")
+        .d-flex.justify-content-between.align-items-center.flex-wrap
 
-            form(method="GET" action="/social")
-                label(for="category").mb-2 Select Category:
-                select#category(name="category" class="form-control" onchange="this.form.submit()")
+            // Page Title
+            h4.text-dark.mb-0 Social Page
+
+            // Search & Category Selector (Right)
+            form.d-flex.align-items-center(method="GET" action="/social")
+                input.form-control.me-2(
+                    style="width: 250px;" 
+                    type="search" 
+                    name="search" 
+                    placeholder="Search users..." 
+                    value=(search || '')
+                )
+                select#category(name="category" class="form-select" onchange="this.form.submit()")
                     option(value="") All Categories
                     option(value="Driver" selected=(category === 'Driver')) Driver
                     option(value="Passenger" selected=(category === 'Passenger')) Passenger
 
+    .container(style="max-width: 1000px; width: 100%;")
+        // Users List Section (Grid)
+        .row
             each user in data
+                .col-6.col-md-4.col-lg-3.mb-4 
+                    .card.shadow-sm.bg-white.rounded.w-100.h-100
 
-                .col-12.mb-4
-                    .card.shadow-lg.w-100(style="height: 150px;")
-                        .row.no-gutters.h-100
-                            // Profile Image (Fixed Size, No Flexible Resizing)
-                            .col-md-4
-                                if user.profile_pic
-                                    img.card-img-left(
-                                        src=user.profile_pic, 
-                                        alt="Profile Picture", 
-                                        class="img-fluid", 
-                                        style="object-fit: cover; height: 100%; width: 100%; overflow: hidden;"
-                                    )
-                                else
-                                    div.card-img-left.d-flex.align-items-center.justify-content-center.bg-light(
-                                        style="height: 100%;"
-                                    )
-                                        i.bi.bi-person-circle.display-1.text-secondary
+                        // Profile Image on Top (Smaller)
+                        if user.profile_pic
+                            img.card-img-top(
+                                src=user.profile_pic, 
+                                alt="Profile Picture", 
+                                class="img-fluid", 
+                                style="object-fit: cover; height: 140px; width: 100%;"
+                            )
+                        else
+                            div.card-img-top.d-flex.align-items-center.justify-content-center.bg-light(
+                                style="height: 140px; width: 100%;"
+                            )
+                                i.bi.bi-person-circle.display-1.text-secondary
 
-                            // Content (Fixed Height, Content Centered Vertically)
-                            .col-md-8.d-flex.align-items-center
-                                .card-body.text-left
-                                    h3 
-                                        a.namesSocial.text-primary.text-decoration-none(href=`/social/${user.user_id}`) #{user.user_name}
+                        // User Info (Smaller Font)
+                        .card-body.text-center.p-2
+                            h6.mb-1 
+                                a.namesSocial.text-primary.text-decoration-none(href=`/social/${user.user_id}`) #{user.user_name}
 
-                                    p.mb-2 
-                                        strong Role:  
-                                        | #{user.role}
-                                    p.text-muted 
-                                        | #{user.bio || "No bio available"}
+                            p.mb-1.text-muted.small
+                                strong Role:  
+                                | #{user.role}
+
+                            p.text-muted.small.mb-0
+                                | #{user.bio || "No bio available"}
 
     if !data.length
         p.text-center No users found.
