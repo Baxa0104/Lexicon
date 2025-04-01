@@ -1,21 +1,22 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function() {
     const sidebar = document.getElementById("sidebar");
     const sidebarToggle = document.getElementById("sidebarToggle");
-
-    sidebarToggle.addEventListener("click", function () {
-        sidebar.classList.toggle("show");
-
-        // Hide the button when sidebar is open
-        if (sidebar.classList.contains("show")) {
-            sidebarToggle.style.display = "none";
-        }
+    const closeSidebar = document.getElementById("closeSidebar");
+    
+    // Show sidebar when the hamburger icon is clicked
+    sidebarToggle.addEventListener("click", function() {
+        sidebar.classList.add("show");
     });
 
-    // Close sidebar when clicking outside (optional)
-    document.addEventListener("click", function (event) {
-        if (!sidebar.contains(event.target) && !sidebarToggle.contains(event.target)) {
+    // Close sidebar when the close button inside the sidebar is clicked
+    closeSidebar.addEventListener("click", function() {
+        sidebar.classList.remove("show");
+    });
+
+    // Close sidebar when clicking outside of it
+    document.addEventListener("click", function(e) {
+        if (!sidebar.contains(e.target) && e.target !== sidebarToggle) {
             sidebar.classList.remove("show");
-            sidebarToggle.style.display = "block"; // Show button again
         }
     });
 });
