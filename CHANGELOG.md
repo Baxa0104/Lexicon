@@ -12,3 +12,8 @@
 - **Limited error handling** for missing data or invalid inputs.
 - **Profile picture resizing** can cause minor display inconsistencies.
 - **Mobile responsiveness** fixes for the profile page and ride details.
+
+
+## [v0.1.1] - 2025-03-13
+### Fixed.
+- **Categories Filter** Fixed Categories filter in /social route

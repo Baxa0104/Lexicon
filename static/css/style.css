@@ -1,15 +1,305 @@
-/* Fixed Sidebar (visible only on large screens) */
-.sidebar {
+/* Global Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    background-color: #f8f9fa;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+/* Sidebar Styles */
+#sidebar {
+    width: 250px;
+    position: fixed;
+    height: 100vh;
+    left: -250px;
+    top: 0;
+    background: white;
+    border-right: 1px solid #ddd;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+#sidebar.show {
+    left: 0;
+}
+
+/* Main Content */
+.main-content {
+    width: 100%;
+    min-height: 100vh;
+    padding-top: 60px;
+    transition: all 0.3s ease;
+}
+
+/* Mobile Header */
+.mobile-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: white;
+    z-index: 900;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+}
+
+#sidebarToggle {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    padding: 10px;
+    cursor: pointer;
+    color: #333;
+}
+
+.mobile-header-title {
+    margin-left: 15px;
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: #333;
+}
+
+#closeSidebar {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #333;
+}
+
+/* Desktop Layout */
+@media (min-width: 769px) {
+    #sidebar {
+        left: 0;
+    }
+    
+    .main-content {
+        margin-left: 250px;
+        width: calc(100% - 250px);
+        padding-top: 20px;
+    }
+    
+    .mobile-header {
+        display: none;
+    }
+}
+
+/* Laptop Screens (769px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    #sidebar {
+        width: 220px;
+    }
+    
+    .main-content {
+        margin-left: 220px;
+        width: calc(100% - 220px);
+    }
+    
+    .container {
+        max-width: 95%;
+        padding: 15px;
+    }
+}
+
+/* Larger Laptop Screens (1025px - 1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+    #sidebar {
+        width: 240px;
+    }
+    
+    .main-content {
+        margin-left: 240px;
+        width: calc(100% - 240px);
+    }
+    
+    .container {
+        max-width: 1200px;
+        padding: 20px;
+    }
+    
+    /* Adjust card layouts for optimal viewing */
+    .col-lg-3 {
+        flex: 0 0 33%;
+        max-width: 33%;
+    }
+}
+
+/* Large Desktop Screens (1441px - 1920px) */
+@media (min-width: 1441px) and (max-width: 1920px) {
+    #sidebar {
+        width: 280px;
+    }
+    
+    .main-content {
+        margin-left: 280px;
+        width: calc(100% - 280px);
+        max-width: 1800px;
+        margin-right: auto;
+    }
+    
+    .container {
+        max-width: 1600px;
+        padding: 30px;
+    }
+    
+    /* More spacious card layout */
+    .col-lg-3 {
+        flex: 0 0 33%;
+        max-width: 33%;
+    }
+}
+
+/* Extra Large Screens (1921px and up) */
+@media (min-width: 1921px) {
+    #sidebar {
+        width: 300px;
+    }
+    
+    .main-content {
+        margin-left: 300px;
+        width: calc(100% - 300px);
+        max-width: 2000px;
+    }
+    
+    .container {
+        max-width: 1800px;
+        padding: 40px;
+    }
+    
+    /* Even more spacious layout */
+    .col-lg-3 {
+        flex: 0 0 33.33333%;
+        max-width: 33.33333%;
+    }
+    
+    /* Increase font sizes for better readability */
+    html {
+        font-size: 18px;
+    }
+}
+
+/* Content Layout */
+.container {
+    max-width: 1200px;
+    width: 90%;
+    margin: 0 auto;
+    padding-top: 20px;
+}
+
+/* Ride Request & Social Cards */
+.card {
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+/* 🚀 Fixed Image Resizing in Cards */
+.card-img-top {
+    height: 160px !important; /* Default height */
+    width: 100%;
+    object-fit: cover; /* Ensures proper cropping */
+}
+
+@media (min-width: 768px) {
+    .card-img-top {
+        height: 180px !important; /* Slightly larger on tablets */
+    }
+}
+
+@media (min-width: 1024px) {
+    .card-img-top {
+        height: 200px !important; /* Adjust for laptops */
+    }
+}
+
+@media (min-width: 1440px) {
+    .card-img-top {
+        height: 220px !important; /* Larger for desktops */
+    }
+}
+
+@media (min-width: 1920px) {
+    .card-img-top {
+        height: 240px !important; /* Largest screens get the biggest image */
+    }
+}
+
+/* Utility Classes */
+.bg-white {
     background-color: white;
-    border-right: 1px solid black;
 }
 
-.btn.active{
-    background-color: #ffbd03 !important;
-    outline: #ffbd03 !important;
+.rounded {
+    border-radius: 8px;
 }
 
-.namesSocial{
-    color: black !important;
-    text-decoration-color: black !important;
+.shadow-sm {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.shadow-lg {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Better responsive grid */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+[class*="col-"] {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+/* Responsive typography */
+html {
+    font-size: 16px;
+}
+
+@media (min-width: 1200px) {
+    html {
+        font-size: 17px;
+    }
+}
+
+@media (min-width: 1600px) {
+    html {
+        font-size: 18px;
+    }
+}
+
+/* Smooth transitions for all interactive elements */
+button, a, .card {
+    transition: all 0.2s ease-in-out;
+}
+
+/* Better touch targets for mobile */
+@media (max-width: 768px) {
+    button, [role="button"] {
+        min-width: 44px;
+        min-height: 44px;
+    }
 }

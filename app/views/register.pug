@@ -1,0 +1,23 @@
+extends formsLayout
+
+block content
+  .container.mt-5(style="max-width: 400px;")
+    .card
+      .card-body
+        h2 Register
+        if error.length
+          .alert.alert-danger= error
+        form(method="POST" action="/register")
+          .mb-3
+            label.form-label Username
+            input.form-control(type="text" name="username" required)
+          .mb-3
+            label.form-label Email
+            input.form-control(type="email" name="email" required)
+          .mb-3
+            label.form-label Password
+            input.form-control(type="password" name="password" required)
+          button.btn.btn-primary.w-100 Register
+        .mt-3
+          | Already have an account? 
+          a(href="/login") Login
