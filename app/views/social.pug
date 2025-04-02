@@ -26,34 +26,35 @@ block content
         // Users List Section (Grid)
         .row
             each user in data
-                .col-6.col-md-4.col-lg-3.mb-4 
-                    .card.shadow-sm.bg-white.rounded.w-100.h-100
+                if user.user_id !== userSession.id
+                    .col-6.col-md-4.col-lg-3.mb-4 
+                        .card.shadow-sm.bg-white.rounded.w-100.h-100
 
-                        // Profile Image on Top (Smaller)
-                        if user.profile_pic
-                            img.card-img-top(
-                                src=user.profile_pic, 
-                                alt="Profile Picture", 
-                                class="img-fluid", 
-                                style="object-fit: cover; height: 140px; width: 100%;"
-                            )
-                        else
-                            div.card-img-top.d-flex.align-items-center.justify-content-center.bg-light(
-                                style="height: 140px; width: 100%;"
-                            )
-                                i.bi.bi-person-circle.display-1.text-secondary
+                            // Profile Image on Top (Smaller)
+                            if user.profile_pic
+                                img.card-img-top(
+                                    src=user.profile_pic, 
+                                    alt="Profile Picture", 
+                                    class="img-fluid", 
+                                    style="object-fit: cover; height: 140px; width: 100%;"
+                                )
+                            else
+                                div.card-img-top.d-flex.align-items-center.justify-content-center.bg-light(
+                                    style="height: 140px; width: 100%;"
+                                )
+                                    i.bi.bi-person-circle.display-1.text-secondary
 
-                        // User Info (Smaller Font)
-                        .card-body.text-center.p-2
-                            h6.mb-1 
-                                a.namesSocial.text-primary.text-decoration-none(href=`/social/${user.user_id}`) #{user.user_name}
+                            // User Info (Smaller Font)
+                            .card-body.text-center.p-2
+                                h6.mb-1 
+                                    a.namesSocial.text-primary.text-decoration-none(href=`/social/${user.user_id}`) #{user.user_name}
 
-                            p.mb-1.text-muted.small
-                                strong Role:  
-                                | #{user.role}
+                                p.mb-1.text-muted.small
+                                    strong Role:  
+                                    | #{user.role}
 
-                            p.text-muted.small.mb-0
-                                | #{user.bio || "No bio available"}
+                                p.text-muted.small.mb-0
+                                    | #{user.bio || "No bio available"}
 
-    if !data.length
-        p.text-center No users found.
+        if !data.length
+            p.text-center No users found.

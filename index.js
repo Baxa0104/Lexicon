@@ -3,4 +3,4 @@
 // Include the app.js file.
 // This will run the code.
 console.log("entrypoint");
-const app = require("./app/app.js");
+const app = require("./app/controllers/app.js");

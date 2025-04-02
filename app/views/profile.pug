@@ -22,7 +22,8 @@ block content
                             i.bi.bi-person-circle.display-1.text-secondary
 
                     // Change Picture Button
-                    a.btn.btn-outline-primary.btn-sm.mt-3(href="/account/change-picture") Change Picture
+                    if user.user_id === userSession.id
+                        a.btn.btn-outline-primary.btn-sm.mt-3(href="/account/change-picture") Change Picture
 
                 // User Info
                 .col-md-8
@@ -49,32 +50,34 @@ block content
 
                     // Action Buttons (Spaced Properly)
                     .d-flex.mt-4.flex-wrap.gap-2
-                        a.btn.btn-primary(href="/account/edit") Edit Profile
-                        a.btn.btn-secondary(href="/account/edit-password") Change Password
+                        if user.user_id === userSession.id
+                            a.btn.btn-primary(href="/account/edit") Edit Profile
+                            a.btn.btn-secondary(href="/account/edit-password") Change Password
+        
+        if user.user_id === userSession.id
+            // Danger Zone Section (Now Fully Expanded)
+            .card.shadow-sm.bg-white.rounded.p-4.border-danger.w-100
+                h4.text-danger Danger Zone
+                p.text-muted Be careful with these actions.
 
-        // Danger Zone Section (Now Fully Expanded)
-        .card.shadow-sm.bg-white.rounded.p-4.border-danger.w-100
-            h4.text-danger Danger Zone
-            p.text-muted Be careful with these actions.
+                hr
 
-            hr
+                // Change to Driver Status Section
+                .mb-4
+                    if user.role !== "Driver"
+                        strong.text-warning Become a Driver
+                        p.text-muted.small To become a driver, upload your driver’s license for verification.  
+                        a.btn.btn-outline-warning.w-100(href="/account/upgrade-to-driver") Change to Driver Status
+                    else
+                        strong.text-warning Become a Passenger
+                        p.text-muted.small You are currently a driver. You can switch back to passenger mode anytime.
+                        a.btn.btn-outline-warning.w-100(href="/account/revert-to-passenger") Switch to Passenger
 
-            // Change to Driver Status Section
-            .mb-4
-                if user.role !== "Driver"
-                    strong.text-warning Become a Driver
-                    p.text-muted.small To become a driver, upload your driver’s license for verification.  
-                    a.btn.btn-outline-warning.w-100(href="/account/upgrade-to-driver") Change to Driver Status
-                else
-                    strong.text-warning Become a Passenger
-                    p.text-muted.small You are currently a driver. You can switch back to passenger mode anytime.
-                    a.btn.btn-outline-warning.w-100(href="/account/revert-to-passenger") Switch to Passenger
+                hr
 
-            hr
-
-            // Delete Account Section (Fully Spaced & Structured)
-            .mb-1
-                div
-                    strong.text-danger Delete Account
-                    p.text-muted.small Once deleted, there is no going back. Please be certain.
-                    a.btn.btn-outline-danger.w-100(href="/account/delete") Delete Account
+                // Delete Account Section (Fully Spaced & Structured)
+                .mb-1
+                    div
+                        strong.text-danger Delete Account
+                        p.text-muted.small Once deleted, there is no going back. Please be certain.
+                        a.btn.btn-outline-danger.w-100(href="/account/delete") Delete Account
