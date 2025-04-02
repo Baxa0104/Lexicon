@@ -1,7 +1,7 @@
 extends formsLayout
 
 block content
-  .container.mt-5(style="max-width: 400px;")
+  .container.mt-5(style="max-width: 500px;")
     .card
       .card-body
         h2 Register
@@ -9,15 +9,29 @@ block content
           .alert.alert-danger= error
         form(method="POST" action="/register")
           .mb-3
-            label.form-label Username
+            label.form-label Your Full Name
             input.form-control(type="text" name="username" required)
           .mb-3
             label.form-label Email
             input.form-control(type="email" name="email" required)
           .mb-3
+            label.form-label Phone number
+            input.form-control(type="text" name="phone")
+          .mb-3
+            label.form-label Address
+            input.form-control(type="text" name="address")
+          .mb-3
             label.form-label Password
-            input.form-control(type="password" name="password" required)
-          button.btn.btn-primary.w-100 Register
+            input.form-control(type="password" name="password" required id="password")
+          .mb-3
+            label.form-label Confirm Password
+            input.form-control(type="password" name="confirm_password" required id="confirm_password")
+          .mb-3
+            input.form-check-input(type="checkbox" id="show-password" onclick="togglePasswordVisibility()")
+            label.form-check-label(for="show-password") Show Password
+          button.btn.btn-primary.w-100(type="submit") Register
         .mt-3
           | Already have an account? 
           a(href="/login") Login
+
+    script(src="/js/showPassword.js")

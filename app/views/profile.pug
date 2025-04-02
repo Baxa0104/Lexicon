@@ -23,7 +23,7 @@ block content
 
                     // Change Picture Button
                     if user.user_id === userSession.id
-                        a.btn.btn-outline-primary.btn-sm.mt-3(href="/account/change-picture") Change Picture
+                        a.btn.btn-outline-primary.btn-sm.mt-3(href="/account/edit/picture") Change Picture
 
                 // User Info
                 .col-md-8
@@ -51,8 +51,8 @@ block content
                     // Action Buttons (Spaced Properly)
                     .d-flex.mt-4.flex-wrap.gap-2
                         if user.user_id === userSession.id
-                            a.btn.btn-primary(href="/account/edit") Edit Profile
-                            a.btn.btn-secondary(href="/account/edit-password") Change Password
+                            a.btn.btn-primary(href="/account/edit/profile") Edit Profile
+                            a.btn.btn-secondary(href="/account/edit/password") Change Password
         
         if user.user_id === userSession.id
             // Danger Zone Section (Now Fully Expanded)
@@ -67,11 +67,11 @@ block content
                     if user.role !== "Driver"
                         strong.text-warning Become a Driver
                         p.text-muted.small To become a driver, upload your driver’s license for verification.  
-                        a.btn.btn-outline-warning.w-100(href="/account/upgrade-to-driver") Change to Driver Status
+                        a.btn.btn-outline-warning.w-100(href="/account/change/driver") Change to Driver Status
                     else
                         strong.text-warning Become a Passenger
                         p.text-muted.small You are currently a driver. You can switch back to passenger mode anytime.
-                        a.btn.btn-outline-warning.w-100(href="/account/revert-to-passenger") Switch to Passenger
+                        a.btn.btn-outline-warning.w-100(href="/account/change/passenger") Switch to Passenger
 
                 hr
 
