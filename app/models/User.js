@@ -39,8 +39,8 @@ class User {
     const hashedPassword = await bcrypt.hash(userData.password, 10);
     const sql = `
       INSERT INTO user 
-        (user_name, email, password_hash, role, bio, address) 
-      VALUES (?, ?, ?, 'Passenger', ?, ?)
+        (user_name, email, password_hash, role) 
+      VALUES (?, ?, ?, 'Passenger')
     `;
     return db.query(sql, [
       userData.username,
@@ -54,6 +54,12 @@ class User {
     const sql = 'SELECT * FROM User WHERE email = ?'; 
     const results = await db.query(sql, [email]);
     return results[0];
+  }
+
+  // Find a user by their ID and delete
+  static async findByIdAndDelete(userId) {
+    const sql = 'DELETE FROM User WHERE user_id = ?';
+    return db.query(sql, [userId]);
   }
 }
 

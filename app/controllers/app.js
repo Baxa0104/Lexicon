@@ -278,16 +278,41 @@ app.post('/account/edit', requireAuth, async (req, res) => {
   }
 });
 
-// Delete Account
-app.get('/account/delete', requireAuth, async (req, res) => {
+// Route to render delete confirmation page
+app.get('/account/delete', (req, res) => {
+
+  res.render('deleteConfirmation', {
+    userSession: req.session.user
+  
+  });
+});
+
+app.post('/account/delete', requireAuth, async (req, res) => {
+  const userId = req.session.user.id;
+
   try {
-      console.log("Deleting account for user ID:", req.session.user?.id);
-      await User.delete(req.session.user.id);
-      req.session.destroy();
-      res.redirect('/register');
+    // Attempt to delete user from the database
+    const result = await User.findByIdAndDelete(userId);
+
+    if (!result) {
+      req.flash('error', 'Account deletion failed.');
+      return res.redirect('/account/delete'); // Return the user back if deletion failed
+    }
+
+    // Destroy the session
+    req.session.destroy((err) => {
+      if (err) {
+        console.error('Session destroy error:', err);
+        return res.status(500).send('Error logging out');
+      }
+
+      // Redirect after successfully deleting the account
+      res.redirect('/'); // Redirect to homepage or login page
+    });
   } catch (err) {
-      console.error("Delete Account Error:", err);
-      res.status(500).send("Internal Server Error");
+    console.error('Error deleting account:', err);
+    req.flash('error', 'An error occurred while deleting the account.');
+    res.redirect('/account/delete'); // Return the user back if an error occurred
   }
 });
 
