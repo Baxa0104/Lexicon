@@ -22,26 +22,33 @@ block content
         // Rides List Section (Grid)
         .row
             each ride in data
-                .col-6.col-md-4.col-lg-3.mb-4
+                .col-6.col-md-4.col-lg-3.mb-4 
                     .card.shadow-sm.bg-white.rounded.w-100.h-100
-                        // Ride Image
-                        .card-img-top
-                            if ride.ride_pics
-                                img(src=ride.ride_pics, alt=ride.short_name, class="img-fluid", style="object-fit: cover; height: 150px; width: 100%;")
-                            else
-                                div.bg-light.d-flex.align-items-center.justify-content-center(style="height: 150px; width: 100%;")
-                                    i.bi.bi-image.display-1.text-secondary
 
-                        // Content Below Image
-                        .card-body.d-flex.flex-column.justify-content-between.p-3
-                            h6 
+                        // Ride Image (Consistent Styling)
+                        if ride.ride_pics
+                            img.card-img-top(
+                                src=ride.ride_pics, 
+                                alt=ride.short_name, 
+                                class="img-fluid", 
+                                style="object-fit: cover; height: 140px; width: 100%;"
+                            )
+                        else
+                            div.card-img-top.d-flex.align-items-center.justify-content-center.bg-light(
+                                style="height: 140px; width: 100%;"
+                            )
+                                i.bi.bi-image.display-1.text-secondary
+
+                        // Ride Info (Consistent Formatting)
+                        .card-body.text-center.p-2
+                            h6.mb-1 
                                 a.text-primary.text-decoration-none(href=`/rides/${ride.ride_id}`) #{ride.short_name}
 
-                            p.mb-2.small 
+                            p.mb-1.text-muted.small
                                 strong Driver:  
                                 | #{ride.driver_name}
 
-                            p.text-muted.small 
+                            p.text-muted.small.mb-0
                                 strong Date of Departure:  
                                 | #{ride.departure_date}
 
