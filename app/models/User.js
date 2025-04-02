@@ -34,20 +34,34 @@ class User {
     return db.query(sql, [userId]);
   }
 
-  // Create new user (Registration)
-  static async create(userData) {
-    const hashedPassword = await bcrypt.hash(userData.password, 10);
-    const sql = `
-      INSERT INTO user 
-        (user_name, email, password_hash, role) 
-      VALUES (?, ?, ?, 'Passenger')
-    `;
-    return db.query(sql, [
-      userData.username,
-      userData.email,
-      hashedPassword,
-    ]);
+// Create new user (Registration)
+static async create(userData) {
+  const hashedPassword = await bcrypt.hash(userData.password, 10);
+
+  // Validate that user data is not undefined or missing
+  const username = userData.username || null;
+  const email = userData.email || null; 
+  const phone_number = userData.phone || null; 
+  const address = userData.address || null;
+
+  if (!username || !email || !userData.password) {
+    throw new Error("Required fields missing");
   }
+
+  const sql = `
+    INSERT INTO user 
+      (user_name, email, password_hash, role, phone_number, address) 
+    VALUES (?, ?, ?, 'Passenger', ?, ?)
+  `;
+
+  return db.query(sql, [
+    username,
+    email,
+    hashedPassword,
+    phone_number,     // Can be null
+    address    // Can be null
+  ]);
+}
 
   // Find user by email (Login)
   static async findByEmail(email) {
