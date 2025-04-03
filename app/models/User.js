@@ -73,7 +73,7 @@ class User {
         address = ? 
       WHERE user_id = ?
     `;
-
+    
     await db.query(query, [
       user_name,
       bio,
@@ -82,6 +82,23 @@ class User {
       userId
     ]);
   }
+
+  // Update user profile
+  static async updatePicture(userId, { profile_pic }) {
+    const query = `
+      UPDATE user 
+      SET 
+          profile_pic = ?
+      WHERE user_id = ?
+    `;
+    
+    await db.query(query, [
+      profile_pic,
+      userId
+    ]);
+  }
+
+
 
   // Update user password
   static async updatePassword(userId, newPasswordHash) {

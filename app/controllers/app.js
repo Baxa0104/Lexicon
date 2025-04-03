@@ -7,6 +7,9 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const db = require('../services/db');
 const mysqlSession = require("express-mysql-session")(session);
+const multer = require("multer");
+const path = require("path");
+
 
 // ======================
 // Configuration
@@ -20,6 +23,8 @@ app.set('views', './app/views');
 app.use(express.static("static"));
 app.use('/bootstrap', express.static('node_modules/bootstrap/dist'));
 app.use('/bootstrap-icons', express.static('node_modules/bootstrap-icons'));
+app.use("/uploads", express.static(path.join(__dirname, "../../static/uploads")));
+
 
 // Session configuration
 const sessionStore = new mysqlSession({
@@ -63,6 +68,37 @@ const requireAuth = (req, res, next) => {
   }
   next();
 };
+
+
+// ======================
+// Upload Config
+// ======================
+
+// Set storage engine for Photo Upload
+const storage = multer.diskStorage({
+  destination: path.join(__dirname, "../../static/uploads"), // Correct path
+  filename: (req, file, cb) => {
+    cb(null, `profile-${req.session.user.id}${path.extname(file.originalname)}`);
+  },
+});
+
+// File filter (only images allowed)
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith("image/")) {
+    cb(null, true);
+  } else {
+    cb(new Error("Only images are allowed!"), false);
+  }
+};
+
+// Initialize upload middleware
+const upload = multer({ 
+  storage, 
+  fileFilter, 
+  limits: { fileSize: 2 * 1024 * 1024 } 
+});
+
+
 
 // ======================
 // Routes
@@ -252,6 +288,30 @@ app.post('/account/edit/profile', requireAuth, async (req, res) => {
   }
 });
 
+app.post("/account/edit/picture", requireAuth, upload.single("profile_pic"), async (req, res) => {
+  try {
+    if (!req.file) {
+      req.flash("error", "Please upload an image file.");
+      return res.redirect("/account/edit/picture");
+    }
+
+    const imagePath = `/uploads/${req.file.filename}`;
+    
+    // Update the user profile in the database
+    await User.updatePicture(req.session.user.id, { profile_pic: imagePath });
+
+    // Update session data
+    req.session.user.profile_pic = imagePath;
+
+    req.flash("success", "Profile picture updated successfully!");
+    res.redirect(`/social/${req.session.user.id}`);
+  } catch (err) {
+    console.error("Profile Picture Upload Error:", err);
+    req.flash("error", "Failed to upload profile picture.");
+    res.redirect("/account/edit/picture");
+  }
+});
+
 app.get('/account/edit/password', requireAuth, (req, res) => {
   res.render('changePassword');
 });
@@ -296,6 +356,8 @@ app.post('/account/delete', requireAuth, async (req, res) => {
     res.redirect('/account/delete');
   }
 });
+
+
 
 // ======================
 // Server Initialization
