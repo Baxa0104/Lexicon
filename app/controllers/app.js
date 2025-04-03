@@ -342,20 +342,51 @@ app.post('/account/edit/password', requireAuth, async (req, res) => {
   }
 });
 
+// Render the delete confirmation page for current user (who is logged in)
 app.get('/account/delete', requireAuth, (req, res) => {
   res.render('deleteConfirmation');
 });
 
+// Handle account deletion for current user
 app.post('/account/delete', requireAuth, async (req, res) => {
   try {
     await User.deleteById(req.session.user.id);
-    req.session.destroy(() => res.redirect('/login'));
+    req.session.destroy(() => res.redirect('/login')); // After deleting, log out and redirect to login
   } catch (err) {
     console.error('Account Deletion Error:', err);
     req.flash('error', 'Failed to delete account');
-    res.redirect('/account/delete');
+    res.redirect('/account/delete'); // Go back to the delete confirmation page if there's an error
   }
 });
+
+// Admin Deleting Any User (by ID)
+app.get('/account/delete/:id', requireAuth, isAdmin, (req, res) => {
+  const userId = req.params.id;
+  res.render('deleteConfirmation', { userId }); // Pass userId to the view
+});
+
+
+// Handle account deletion for a specific user (only accessible by admin)
+app.post('/account/delete/:id', requireAuth, isAdmin, async (req, res) => {
+  const userId = req.params.id;
+  try {
+    await User.deleteById(userId); // Delete user by ID
+    req.flash('success', 'Successfully Deleted');
+    res.redirect('/social'); // Redirect to social page after successful deletion
+  } catch (err) {
+    console.error('Account Deletion Error:', err);
+    req.flash('error', 'Failed to delete user');
+    res.redirect('/social'); // Redirect back to the social page if there's an error
+  }
+});
+
+// Middleware to check if user is admin (only admins can delete other users)
+function isAdmin(req, res, next) {
+  if (req.session.user.role !== 'Admin') {
+    return res.status(403).send('Forbidden');
+  }
+  next();
+}
 
 
 
