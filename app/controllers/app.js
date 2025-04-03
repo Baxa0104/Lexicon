@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const bcrypt = require('bcryptjs');
 const Ride = require('../models/Ride');
-const User = require('../models/User');  // Changed from Social to User for consistency
+const User = require('../models/User');
 const session = require('express-session');
 const flash = require('connect-flash');
 const db = require('../services/db');
@@ -17,89 +17,67 @@ app.set('views', './app/views');
 // ======================
 // Middleware
 // ======================
-
-// Serve static files
 app.use(express.static("static"));
 app.use('/bootstrap', express.static('node_modules/bootstrap/dist'));
 app.use('/bootstrap-icons', express.static('node_modules/bootstrap-icons'));
 
-
-
-// ======================
-// Cookies and Sessions
-// ======================
-
-// Create a session store using your MySQL connection pool
+// Session configuration
 const sessionStore = new mysqlSession({
-  expiration: 86400000, // 1 day in milliseconds
-  createDatabaseTable: true,  // Automatically creates the sessions table if it doesn't exist
-}, db.pool);  // Use the pool from db.js
+  expiration: 86400000,
+  createDatabaseTable: true,
+}, db.pool);
 
-
-// Session middleware configuration
 app.use(session({
   key: "user_sid",
-  secret: "your-secret-key",  // Replace with an environment variable in production
-  store: sessionStore,  // Use the session store
+  secret: process.env.SESSION_SECRET || "your-secret-key",
+  store: sessionStore,
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: false,  // Set to true if using HTTPS
-    httpOnly: true,  // Helps prevent cross-site scripting (XSS)
-    maxAge: 3600000, // Cookie expires in 1 hour
+    secure: process.env.NODE_ENV === 'production',
+    httpOnly: true,
+    maxAge: 3600000,
   }
 }));
 
-// Flash messages
 app.use(flash());
-
-// Parse form data
 app.use(express.urlencoded({ extended: true }));
 
-// Debug: Log session on every request
+// Global template variables
 app.use((req, res, next) => {
-    console.log("Session on request:", req.session);
-    next();
-});
-
-// Make flash messages available in templates
-app.use((req, res, next) => {
+  // Session and user data
+  res.locals.userSession = req.session.user;
+  // Flash messages
   res.locals.success = req.flash('success');
   res.locals.error = req.flash('error');
   next();
 });
 
-// Authentication middleware
+// ======================
+// Authentication Middleware
+// ======================
 const requireAuth = (req, res, next) => {
-  console.log("Checking authentication. Session user:", req.session.user);
-    if (!req.session.user) {
-        req.flash('error', 'Your session has expired. Please log in again.');
-        return res.redirect('/login');  // Redirect to login
-    }
-    next();
+  if (!req.session.user) {
+    req.flash('error', 'Your session has expired. Please log in again.');
+    return res.redirect('/login');
+  }
+  next();
 };
 
-// Global middleware to pass userSession to all views
-app.use((req, res, next) => {
-  // Make userSession available globally to all templates
-  res.locals.userSession = req.session.user;
-  next();
-});
-
-
 // ======================
-// Login Routes
+// Routes
 // ======================
 
-// Login page
+// ----------------------
+// Authentication Routes
+// ----------------------
 app.get('/login', (req, res) => {
-  if (req.session.user) return res.redirect('/dashboard');
-  res.render('login');
+  req.session.user ? res.redirect('/dashboard') : res.render('login');
 });
 
-// Login handler
 app.post('/login', async (req, res) => {
   try {
+    
     const { email, password } = req.body;
     const user = await User.findByEmail(email);
 
@@ -113,38 +91,39 @@ app.post('/login', async (req, res) => {
       name: user.user_name,
       role: user.role
     };
-    console.log("User session after login:", req.session.user);
-
-    // Ensure session is saved before redirect
     req.session.save(err => {
-      if (err) {
-        console.error('Session save error:', err);
-        return res.status(500).send('Server error');
-      }
-      res.redirect('/dashboard');
+      err ? console.error('Session save error:', err) : res.redirect('/dashboard');
     });
+    
   } catch (err) {
     console.error("Login error:", err);
     res.status(500).send('Server Error');
   }
 });
 
-// Registration Routes
-app.get('/register', (req, res) => {
-  res.render('register');
-});
+app.get('/register', (req, res) => res.render('register'));
 
 app.post('/register', async (req, res) => {
   try {
-    const { username, email, password } = req.body;
-    const existingUser = await User.findByEmail(email);
+    const { username, email, password, phone_number, address } = req.body;
 
-    if (existingUser) {
+    if (await User.findByEmail(email)) {
       req.flash('error', 'Email already registered');
       return res.redirect('/register');
     }
 
-    await User.create({ username, email, password });
+    // Make sure the fields are being received properly
+    console.log('Received Data:', { username, email, password, phone_number, address });
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await User.create({ 
+      username, 
+      email, 
+      password: hashedPassword, 
+      phone_number,  // Make sure this value is passed correctly
+      address         // Make sure this value is passed correctly
+    });
+
     req.flash('success', 'Registration successful! Please login');
     res.redirect('/login');
   } catch (err) {
@@ -153,24 +132,16 @@ app.post('/register', async (req, res) => {
   }
 });
 
-// Logout Route
 app.get('/logout', (req, res) => {
-  console.log("Logging out. Destroying session.");
-  req.session.destroy();
-  res.redirect('/login');
+  req.session.destroy(() => res.redirect('/login'));
 });
 
-// ======================
-// Basic Routes
-// ======================
+// ----------------------
+// Dashboard Routes
+// ----------------------
 app.get("/", (req, res) => res.redirect('/dashboard'));
 
-// ======================
-// Protected Routes
-// ======================
-
 app.get("/dashboard", requireAuth, async (req, res) => {
-  console.log("Session inside dashboard:", req.session.user);
   try {
     res.render('dashboard', { 
       currentRoute: '/dashboard',
@@ -182,17 +153,17 @@ app.get("/dashboard", requireAuth, async (req, res) => {
   }
 });
 
-// Rides Listing
+// ----------------------
+// Ride Management Routes
+// ----------------------
 app.get("/rides", async (req, res) => {
   try {
-    const search = req.query.search;
-    const rides = await Ride.getAll(search);
-    
+    const rides = await Ride.getAll(req.query.search);
     res.render('listing', {
       currentRoute: '/rides',
-      title: 'Ride Request',
+      title: 'Ride Requests',
       data: rides,
-      search: search
+      search: req.query.search
     });
   } catch (err) {
     console.error("Rides Error:", err);
@@ -200,124 +171,134 @@ app.get("/rides", async (req, res) => {
   }
 });
 
-// Single Ride Details
 app.get("/rides/:id", async (req, res) => {
   try {
-    const rideId = req.params.id;
-    const ride = await Ride.getById(rideId);
-
-    if (!ride.length) {
-      return res.status(404).send("Ride not found");
-    }
-
-    res.render('listingDetails', {
-      title: 'Ride Details',
-      ride: ride[0],
-    });
+    const ride = await Ride.getById(req.params.id);
+    ride.length ? res.render('listingDetails', { ride: ride[0] }) : res.status(404).send("Ride not found");
   } catch (err) {
     console.error("Ride Details Error:", err);
     res.status(500).send("Internal Server Error");
   }
 });
 
-// Social Users Listing
+// ----------------------
+// User Management Routes
+// ----------------------
 app.get("/social", async (req, res) => {
   try {
-    const { category, search } = req.query;
-    const users = await User.getAll(category, search);
-
+    const users = await User.getAll(req.query.category, req.query.search);
     res.render('social', {
       currentRoute: '/social',
       title: 'User List',
-      heading: 'List of Users',
       data: users,
-      category: category,
-      search: search
+      category: req.query.category,
+      search: req.query.search
     });
-
   } catch (err) {
     console.error("Social Error:", err);
     res.status(500).send("Internal Server Error");
   }
 });
 
-// User Profile
 app.get("/social/:id", async (req, res) => {
   try {
-    const userId = req.params.id;
-    const user = await User.getById(userId);
-
-    if (!user.length) {
-      return res.status(404).send("User not found");
-    }
-
-    res.render('profile', {
-      title: 'User Profile',
-      user: user[0],
-      userSession: req.session.user
-    });
+    const user = await User.getById(req.params.id);
+    user.length 
+      ? res.render('profile', { user: user[0] })
+      : res.status(404).send("User not found");
   } catch (err) {
     console.error("Profile Error:", err);
     res.status(500).send("Internal Server Error");
   }
 });
 
-// Profile Edit
-app.post('/account/edit', requireAuth, async (req, res) => {
+// ----------------------
+// Account Management Routes
+// ----------------------
+app.get('/account/edit/profile', requireAuth, async (req, res) => {
   try {
-      const { username, bio, phone, address } = req.body;
-      const userId = req.session.user?.id;
-      console.log("Editing profile for user ID:", userId);
-
-      await User.update(userId, { username, bio, phone, address });
-      req.flash('success', 'Profile updated successfully');
-      res.redirect('/account/edit');
+    const user = await User.getById(req.session.user.id);
+    res.render('editProfile', { user: user[0] });
   } catch (err) {
-      console.error("Profile Update Error:", err);
-      res.status(500).send("Internal Server Error");
+    console.error("Profile Edit Error:", err);
+    res.status(500).send("Internal Server Error");
   }
 });
 
-// Route to render delete confirmation page
-app.get('/account/delete', (req, res) => {
+app.post('/account/edit/profile', requireAuth, async (req, res) => {
+  try {
+    const { username, bio, phone_number, address } = req.body;
+    
+    // Convert empty strings to null for database
+    const cleanBio = bio === '' ? null : bio;
+    const cleanPhone = phone_number === '' ? null : phone_number;
+    const cleanAddress = address === '' ? null : address;
 
-  res.render('deleteConfirmation', {
-    userSession: req.session.user
-  
-  });
+    const userId = req.session.user.id;
+
+    await User.update(userId, { 
+      user_name: username, 
+      bio: cleanBio, 
+      phone_number: cleanPhone, 
+      address: cleanAddress 
+    });
+    
+    req.flash('success', 'Profile updated successfully');
+    res.redirect(`/social/${userId}`);
+  } catch (err) {
+    console.error("Profile Update Error:", err);
+    req.flash('error', 'Failed to update profile');
+    res.redirect('/account/edit/profile');
+  }
+});
+
+app.get('/account/edit/password', requireAuth, (req, res) => {
+  res.render('changePassword');
+});
+
+app.post('/account/edit/password', requireAuth, async (req, res) => {
+  try {
+    const { current_password, new_password, confirm_password } = req.body;
+    const user = await User.getById(req.session.user.id);
+    
+    if (!await bcrypt.compare(current_password, user[0].password_hash)) {
+      req.flash('error', 'Current password is incorrect');
+      return res.redirect('/account/edit/password');
+    }
+
+    if (new_password !== confirm_password) {
+      req.flash('error', 'New passwords do not match');
+      return res.redirect('/account/edit/password');
+    }
+
+    const hashedPassword = await bcrypt.hash(new_password, 10);
+    await User.updatePassword(req.session.user.id, hashedPassword);
+    
+    req.flash('success', 'Password updated successfully');
+    res.redirect(`/social/${req.session.user.id}`);
+  } catch (err) {
+    console.error("Password Change Error:", err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+app.get('/account/delete', requireAuth, (req, res) => {
+  res.render('deleteConfirmation');
 });
 
 app.post('/account/delete', requireAuth, async (req, res) => {
-  const userId = req.session.user.id;
-
   try {
-    // Attempt to delete user from the database
-    const result = await User.findByIdAndDelete(userId);
-
-    if (!result) {
-      req.flash('error', 'Account deletion failed.');
-      return res.redirect('/account/delete'); // Return the user back if deletion failed
-    }
-
-    // Destroy the session
-    req.session.destroy((err) => {
-      if (err) {
-        console.error('Session destroy error:', err);
-        return res.status(500).send('Error logging out');
-      }
-
-      // Redirect after successfully deleting the account
-      res.redirect('/'); // Redirect to homepage or login page
-    });
+    await User.deleteById(req.session.user.id);
+    req.session.destroy(() => res.redirect('/login'));
   } catch (err) {
-    console.error('Error deleting account:', err);
-    req.flash('error', 'An error occurred while deleting the account.');
-    res.redirect('/account/delete'); // Return the user back if an error occurred
+    console.error('Account Deletion Error:', err);
+    req.flash('error', 'Failed to delete account');
+    res.redirect('/account/delete');
   }
 });
 
 // ======================
-// Server Start
+// Server Initialization
 // ======================
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
