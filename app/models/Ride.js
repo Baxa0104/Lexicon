@@ -11,7 +11,7 @@ class Ride {
         u.user_name AS driver_name, u.email, u.phone_number
       FROM ride r 
       JOIN user u ON r.driver_id = u.user_id 
-      WHERE u.role = "Driver"
+      WHERE u.role = 'Driver'
     `;
     const params = [];
     
