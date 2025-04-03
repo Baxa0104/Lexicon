@@ -5,7 +5,7 @@ class User {
         
   // Get all users (with filters for social.pug)
   static async getAll(category, searchTerm) {
-    let sql = 'SELECT * FROM User';
+    let sql = 'SELECT * FROM user';
     const params = [];
     
     if (category) {
@@ -28,7 +28,7 @@ class User {
       SELECT 
         user_id, user_name, profile_pic, bio, 
         email, phone_number, address, role
-      FROM User 
+      FROM user 
       WHERE user_id = ?
     `;
     return db.query(sql, [userId]);
@@ -65,14 +65,14 @@ static async create(userData) {
 
   // Find user by email (Login)
   static async findByEmail(email) {
-    const sql = 'SELECT * FROM User WHERE email = ?'; 
+    const sql = 'SELECT * FROM user WHERE email = ?'; 
     const results = await db.query(sql, [email]);
     return results[0];
   }
 
   // Find a user by their ID and delete
   static async findByIdAndDelete(userId) {
-    const sql = 'DELETE FROM User WHERE user_id = ?';
+    const sql = 'DELETE FROM user WHERE user_id = ?';
     return db.query(sql, [userId]);
   }
 }
