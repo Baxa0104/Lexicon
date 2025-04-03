@@ -1,43 +1,35 @@
-document.getElementById("changePicBtn").addEventListener("click", function () {
-    document.getElementById("profilePicInput").click();
-});
+document.addEventListener("DOMContentLoaded", () => {
+    const fileInput = document.getElementById("file-input");
+    const uploadBtn = document.getElementById("upload-btn");
+    const changeBtn = document.getElementById("change-btn");
+    const profilePreview = document.getElementById("profile-preview");
+    const profilePlaceholder = document.getElementById("profile-placeholder");
 
-document.getElementById("profilePicInput").addEventListener("change", function (event) {
-    const file = event.target.files[0];
+    if (!fileInput || !changeBtn) return;
 
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            document.getElementById("profilePic").src = e.target.result;
-            document.getElementById("uploadPicBtn").style.display = "";
-        };
-        reader.readAsDataURL(file);
-    }
-});
+    // Open file picker when clicking "Change Picture"
+    changeBtn.addEventListener("click", () => fileInput.click());
 
-document.getElementById("uploadProfilePicForm").addEventListener("submit", async function (event) {
-    event.preventDefault();
-    const fileInput = document.getElementById("profilePicInput");
+    // Show upload button and update preview when file is selected
+    fileInput.addEventListener("change", (event) => {
+        if (event.target.files.length > 0) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
 
-    if (fileInput.files.length === 0) {
-        alert("Please select an image first.");
-        return;
-    }
+            reader.onload = (e) => {
+                // Update profile image preview
+                if (profilePreview) {
+                    profilePreview.src = e.target.result;
+                    profilePreview.style.display = "block";
+                }
+                // Hide placeholder if an image is uploaded
+                if (profilePlaceholder) {
+                    profilePlaceholder.style.display = "none";
+                }
+            };
 
-    const formData = new FormData();
-    formData.append("profile_pic", fileInput.files[0]);
-
-    const response = await fetch("/account/upload-profile-picture", {
-        method: "POST",
-        body: formData,
+            reader.readAsDataURL(file);
+            uploadBtn.style.display = "block"; // Show Upload button
+        }
     });
-
-    const result = await response.json();
-
-    if (result.success) {
-        alert("Profile picture updated successfully!");
-        document.getElementById("profilePic").src = result.profile_pic;
-    } else {
-        alert("Error uploading profile picture.");
-    }
 });
