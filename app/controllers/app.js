@@ -570,6 +570,37 @@ app.post('/book/:ride_id', (req, res) => {
 });
 
 
+// Route to fetch requested rides (history)
+app.get('/history', requireAuth, async (req, res) => {
+  try {
+      const userId = req.session.user.id;
+
+      // Query to fetch rides the user has requested (booked)
+      const sql = `
+          SELECT r.ride_id, r.origin_address, r.destination_address, r.departure_time, 
+                 b.booking_time, b.status, b.payment_status
+          FROM booking AS b
+          JOIN ride AS r ON b.ride_id = r.ride_id
+          WHERE b.user_id = ?
+          ORDER BY b.booking_time DESC
+      `;
+      
+      const results = await db.query(sql, [userId]);
+
+      // Render the history page with the results
+      res.render('history', {
+          title: 'Ride History',
+          heading: 'Your Ride Requests',
+          data: results
+      });
+  } catch (err) {
+      console.error("History Fetching Error:", err);
+      req.flash('error', 'Error retrieving ride history.');
+      res.redirect('/dashboard');
+  }
+});
+
+
 // GET route to show ride creation form
 app.get('/create/ride', requireAuth, isDriver, (req, res) => {
   res.render('createRide');
@@ -608,6 +639,7 @@ app.post('/create/ride', requireAuth, isDriver, upload.single("ride_image"), asy
     res.redirect('/create/ride');
   }
 });
+
 
 
 // ======================

@@ -1,0 +1,38 @@
+extends layout
+
+block content
+    .container.d-flex.flex-column.align-items-center(style="max-width: 1000px; width: 100%; padding: 0px;")
+        h2.text-center.mb-4 Ride History 📜
+
+        if data.length
+            each ride in data
+                .card.shadow-sm.mb-3.p-3.w-100
+                    .row.g-3
+                        .col-md-6
+                            p.mb-1 
+                                strong Origin: 
+                                | #{ride.origin_address} 🏠
+                        .col-md-6
+                            p.mb-1 
+                                strong Destination: 
+                                | #{ride.destination_address} 🏖️
+                    .row.g-3
+                        .col-md-6
+                            p.mb-1 
+                                strong Departure Time: 
+                                | #{ride.departure_time} 🕒
+                        .col-md-6
+                            p.mb-1 
+                                strong Booking Time: 
+                                | #{ride.booking_time} 🗓️
+                    .row.g-3
+                        .col-md-6
+                            p.mb-1 
+                                strong Status: 
+                                | #{ride.status} 📌
+                        .col-md-6
+                            p.mb-1 
+                                strong Payment Status: 
+                                | #{ride.payment_status} 💳
+        else
+            p.text-muted No ride requests found. 😔
