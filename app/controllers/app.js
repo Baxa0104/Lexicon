@@ -13,6 +13,7 @@ const db = require('../services/db');
 const mysqlSession = require("express-mysql-session")(session);
 const multer = require("multer");
 const path = require("path");
+const fs = require('fs');
 
 // ======================
 // Configuration
@@ -69,6 +70,25 @@ const requireAuth = (req, res, next) => {
   next();
 };
 
+// Middleware to check if user is a Driver
+const isDriver = (req, res, next) => {
+  if (req.session.user && req.session.user.role === 'Driver' || req.session.user.role === 'Admin' ) {
+    return next();
+  }
+  return res.status(403).json({ error: 'Access denied. Only drivers can create rides.' });
+}
+
+// Middleware to check if user is admin (only admins can delete other users)
+function isAdmin(req, res, next) {
+  if (!req.session.user) {
+    req.flash('error', 'Session expired. Please log in again.');
+    return res.redirect('/login');
+  }
+  if (req.session.user.role !== 'Admin') {
+    return res.status(403).send('Forbidden');
+  }
+  next();
+}
 
 // ======================
 // Upload Config
@@ -78,7 +98,25 @@ const requireAuth = (req, res, next) => {
 const storage = multer.diskStorage({
   destination: path.join(__dirname, "../../static/uploads"),
   filename: (req, file, cb) => {
-    cb(null, `profile-${req.session.user.id}${path.extname(file.originalname)}`);
+    // Get the file extension
+    const ext = path.extname(file.originalname);
+    
+    // Generate a new filename based on user ID and timestamp
+    let newFileName = `profile-${req.session.user.id}${ext}`;
+    
+    // Ensure the file name is unique by adding a timestamp if necessary
+    let counter = 1;
+    let filePath = path.join(__dirname, "../../static/uploads", newFileName);
+    
+    while (fs.existsSync(filePath)) {
+      // If file exists, append counter to the filename
+      newFileName = `profile-${req.session.user.id}-${Date.now()}-${counter}${ext}`;
+      filePath = path.join(__dirname, "../../static/uploads", newFileName);
+      counter++;
+    }
+
+    // Pass the unique filename to Multer
+    cb(null, newFileName);
   },
 });
 
@@ -95,11 +133,8 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({ 
   storage, 
   fileFilter, 
-  limits: { fileSize: 2 * 1024 * 1024 } 
+  limits: { fileSize: 2 * 1024 * 1024 } // Limit file size to 2MB
 });
-
-
-
 // ======================
 // Routes
 // ======================
@@ -456,18 +491,6 @@ app.post('/account/delete/:id', requireAuth, isAdmin, async (req, res) => {
   }
 });
 
-// Middleware to check if user is admin (only admins can delete other users)
-function isAdmin(req, res, next) {
-  if (!req.session.user) {
-    req.flash('error', 'Session expired. Please log in again.');
-    return res.redirect('/login');
-  }
-  if (req.session.user.role !== 'Admin') {
-    return res.status(403).send('Forbidden');
-  }
-  next();
-}
-
 // Route for booking a ride
 app.get('/book/:ride_id', (req, res) => {
     const rideId = req.params.ride_id;
@@ -545,6 +568,47 @@ app.post('/book/:ride_id', (req, res) => {
           res.redirect(`/rides/${rideId}`);
       });
 });
+
+
+// GET route to show ride creation form
+app.get('/create/ride', requireAuth, isDriver, (req, res) => {
+  res.render('createRide');
+});
+
+
+// POST route to handle ride creation
+app.post('/create/ride', requireAuth, isDriver, upload.single("ride_image"), async (req, res) => {
+  try {
+    const { short_name, departure_date, departure_time, origin_address, destination_address, available_seats, ride_details, price } = req.body;
+
+    // Handle the uploaded image if present
+    const ride_pics = req.file ? `/uploads/${req.file.filename}` : null;
+    console.log(req.body); // Log to see the data being submitted
+
+
+    // Create the ride in the database
+    await Ride.create({
+      short_name,          // Ride Name
+      departure_date,      // Departure Date
+      departure_time,      // Departure Time
+      origin_address,      // Origin Address
+      destination_address, // Destination Address
+      available_seats,     // Available Seats
+      ride_details,        // Additional Details
+      price,               // Price
+      ride_pics,           // Image URL
+      user_id: req.session.user.id,  // Driver ID from session (user_id)
+    });
+
+    req.flash("success", "Ride created successfully!");
+    res.redirect('/rides');
+  } catch (err) {
+    console.error("Ride Creation Error:", err);
+    req.flash("error", "Failed to create ride.");
+    res.redirect('/create/ride');
+  }
+});
+
 
 // ======================
 // Server Initialization

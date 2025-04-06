@@ -36,13 +36,13 @@ html(lang="en")
                                 i.bi.bi-speedometer.me-2
                                 | Dashboard
                         li.nav-item
-                            a.nav-link.d-flex.align-items-center.rounded.px-3.py-2.text-muted.disabled
+                            a.nav-link.d-flex.align-items-center.rounded.px-3.py-2.text-dark(class=currentRoute == '/create/ride' ? 'active bg-primary text-white' : '', href="/create/ride")
                                 i.bi.bi-car-front-fill.me-2
-                                | Ride Availability
+                                | New Ride
                         li.nav-item
                             a.nav-link.d-flex.align-items-center.rounded.px-3.py-2.text-dark(class=currentRoute == '/rides' ? 'active bg-primary text-white' : '', href="/rides")
                                 i.bi.bi-bag-check-fill.me-2
-                                | Ride Request
+                                | Available Rides
                         li.nav-item
                             a.nav-link.d-flex.align-items-center.rounded.px-3.py-2.text-muted.disabled
                                 i.bi.bi-hourglass-split.me-2

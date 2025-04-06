@@ -6,7 +6,7 @@ block content
         // Ride Details Section (Card with Image on the Left)
         .card.shadow-sm.bg-white.rounded.p-4.mb-4.w-100
             .row.g-4
-                // Ride Image Section on Left (No Stretching, Properly Resized)
+                // Ride Image Section
                 .col-md-4.d-flex.align-items-center
                     if ride.ride_pics
                         img.shadow-sm(
@@ -21,7 +21,7 @@ block content
                         )
                             i.bi.bi-car-front.display-1.text-secondary
 
-                // Ride Info Section on Right
+                // Ride Info Section
                 .col-md-8
                     h2.text-primary.mb-3 #{ride.short_name} 🚗
                     p.text-muted.mb-4 #{ride.ride_details || "No description available"} 
@@ -59,21 +59,25 @@ block content
                             strong Email:  
                             | #{ride.email} 📧
 
-                    // Action Buttons (No Justify Content)
+                    // Action Buttons
                     .d-flex.mt-4.flex-wrap.gap-3
                         if ride.available_seats > 0
-                            form(action=`/book/${ride.ride_id}`, method="POST")
-                                button.btn.btn-success(type="submit") 📅 Book Ride
+                            // Button to trigger confirmation modal
+                            button.btn.btn-success(type="button", onclick="showConfirmBookingModal()") 📅 Book Ride
                         else
                             button.btn.btn-danger(type="button", onclick="showNoSeatsPopup()") 🚫 No Seats Available
                         a.btn.btn-info(href=`/social/${ride.user_id}`) 💬 Contact Driver
 
-        // No Ride Found Message
+        // No Ride Found
         if !ride
             .container.rounded.bg-light.p-4.shadow-sm.text-center
                 p No ride details found. 😔
 
-    // Modal for No Seats Available
+    //
+    // --- MODALS SECTION ---
+    //
+
+    // Modal: No Seats Available
     div#noSeatsModal.modal.fade(tabindex="-1" aria-labelledby="noSeatsModalLabel" aria-hidden="true")
         .modal-dialog
             .modal-content
@@ -85,9 +89,55 @@ block content
                 .modal-footer
                     button.btn.btn-secondary(type="button", data-bs-dismiss="modal") Close
 
-    // Script to Show the Modal
+    // Modal: Confirm Booking
+    div#confirmBookingModal.modal.fade(tabindex="-1" aria-labelledby="confirmBookingModalLabel" aria-hidden="true")
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    h5#confirmBookingModalLabel.modal-title ✅ Confirm Booking
+                    button.btn-close(type="button", data-bs-dismiss="modal", aria-label="Close")
+                .modal-body
+                    p Are you sure you want to book this ride?
+                .modal-footer
+                    button.btn.btn-secondary(type="button", data-bs-dismiss="modal") Cancel
+                    form#confirmBookingForm(action=`/book/${ride.ride_id}`, method="POST")
+                        button.btn.btn-primary(type="submit", onclick="showBookedMessage(event)") Confirm
+
+    // Modal: Booking Success
+    div#bookedSuccessModal.modal.fade(tabindex="-1" aria-labelledby="bookedSuccessModalLabel" aria-hidden="true")
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    h5#bookedSuccessModalLabel.modal-title 🎉 Booking Confirmed
+                    button.btn-close(type="button", data-bs-dismiss="modal", aria-label="Close")
+                .modal-body
+                    p You can find your ride details in the History menu.
+                .modal-footer
+                    button.btn.btn-success(type="button", onclick="submitBookingForm()") Ok, Thanks!
+
+    //
+    // --- SCRIPT SECTION ---
+    //
     script.
         function showNoSeatsPopup() {
             var modal = new bootstrap.Modal(document.getElementById('noSeatsModal'));
             modal.show();
+        }
+
+        function showConfirmBookingModal() {
+            var modal = new bootstrap.Modal(document.getElementById('confirmBookingModal'));
+            modal.show();
+        }
+
+        function showBookedMessage(event) {
+            event.preventDefault(); // Stop form from submitting immediately
+            var confirmModal = bootstrap.Modal.getInstance(document.getElementById('confirmBookingModal'));
+            confirmModal.hide();
+
+            var successModal = new bootstrap.Modal(document.getElementById('bookedSuccessModal'));
+            successModal.show();
+        }
+
+        function submitBookingForm() {
+            document.getElementById('confirmBookingForm').submit();
         }
