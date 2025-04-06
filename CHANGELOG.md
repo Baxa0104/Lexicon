@@ -17,3 +17,10 @@
 ## [v0.1.1] - 2025-03-13
 ### Fixed.
 - **Categories Filter** Fixed Categories filter in /social route
+
+## [v1.1.1] - 2025-04-06
+### Fixed.
+- **Major Changes in UI**
+- **Login/Registration Functionality**
+- **Booking and Listing Creation**
+- **User Profile. Responsive Layout** 
