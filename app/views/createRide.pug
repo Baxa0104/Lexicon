@@ -1,0 +1,80 @@
+extends layout
+
+block content
+  h2.mb-4 Create a New Ride
+
+  if error && error.length
+    .alert.alert-danger= error
+  if success && success.length
+    .alert.alert-success= success
+
+  form(action="/create/ride" method="POST" enctype="multipart/form-data")
+    .mb-3
+      label.form-label(for="short_name") Ride Name
+      input.form-control(type="text" name="short_name" required)
+
+    .row
+      .col-md-6.mb-3
+        label.form-label(for="departure_date") Departure Date
+        input.form-control(type="date" name="departure_date" required)
+      .col-md-6.mb-3
+        label.form-label(for="departure_time") Departure Time
+        input.form-control(type="time" name="departure_time" required)
+
+    .mb-3
+      label.form-label(for="origin_address") Origin
+      input.form-control(type="text" name="origin_address" required)
+
+    .mb-3
+      label.form-label(for="destination_address") Destination
+      .row
+        .col-md-6
+          label.form-label(for="destination_address") Select from London Universities:
+          select.form-control(name="destination_address" id="destination_address_dropdown")
+            option(value="") Select a University
+            option(value="University College London, London") University College London, London
+            option(value="King's College London, London") King's College London, London
+            option(value="London School of Economics, London") London School of Economics, London
+            option(value="Imperial College London, London") Imperial College London, London
+            option(value="Queen Mary University of London, London") Queen Mary University of London, London
+            option(value="University of London, London") University of London, London
+            option(value="London Metropolitan University, London") London Metropolitan University, London
+            option(value="Goldsmiths, University of London, London") Goldsmiths, University of London, London
+            option(value="London South Bank University, London") London South Bank University, London
+            option(value="City University London, London") City University London, London
+            option(value="University of East London, London") University of East London, London
+            option(value="University of Westminster, London") University of Westminster, London
+            option(value="Brunel University London, London") Brunel University London, London
+            option(value="Royal Holloway, University of London, London") Royal Holloway, University of London, London
+            option(value="University of Greenwich, London") University of Greenwich, London
+            option(value="University of Arts London, London") University of Arts London, London
+            option(value="St George's, University of London, London") St George's, University of London, London
+            option(value="London Business School, London") London Business School, London
+            option(value="University of Surrey, London") University of Surrey, London
+            option(value="University of Roehampton, London") University of Roehampton, London
+            option(value="University of Kingston, London") University of Kingston, London
+        .col-md-6
+          label.form-label(for="destination_address") Or enter manually:
+          input.form-control(type="text" name="destination_address" id="destination_address_manual" placeholder="Enter destination address manually")
+
+    .mb-3
+      label.form-label(for="available_seats") Available Seats
+      input.form-control(type="number" name="available_seats" min="1" required)
+
+    .mb-3
+      label.form-label(for="ride_details") Additional Details (optional)
+      textarea.form-control(name="ride_details" rows="3")
+
+    .mb-3
+      label.form-label(for="price") Price (per seat)
+      input.form-control(type="text" name="price" required)
+
+    .mb-3
+      label(for="ride_image") Upload Ride Image:
+      input(type="file", name="ride_image", id="ride_image", accept="image/*")
+      img#imagePreview(style="max-width: 300px; display: none; margin-top: 10px;")
+
+    button.btn.btn-primary(type="submit") Create Ride Listing
+
+  script(src="/js/createRideImage.js")
+  script(src="/js/definedDestination.js")
