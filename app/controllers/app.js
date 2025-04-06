@@ -1,3 +1,7 @@
+// ======================
+// Imports
+// ======================
+
 const express = require("express");
 const app = express();
 const bcrypt = require('bcryptjs');
@@ -10,21 +14,19 @@ const mysqlSession = require("express-mysql-session")(session);
 const multer = require("multer");
 const path = require("path");
 
-
 // ======================
 // Configuration
 // ======================
 app.set('view engine', 'pug');
 app.set('views', './app/views');
-
-// ======================
-// Middleware
-// ======================
 app.use(express.static("static"));
 app.use('/bootstrap', express.static('node_modules/bootstrap/dist'));
 app.use('/bootstrap-icons', express.static('node_modules/bootstrap-icons'));
 app.use("/uploads", express.static(path.join(__dirname, "../../static/uploads")));
 
+// ======================
+// Middleware
+// ======================
 
 // Session configuration
 const sessionStore = new mysqlSession({
@@ -50,9 +52,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Global template variables
 app.use((req, res, next) => {
-  // Session and user data
   res.locals.userSession = req.session.user;
-  // Flash messages
   res.locals.success = req.flash('success');
   res.locals.error = req.flash('error');
   next();
@@ -63,7 +63,7 @@ app.use((req, res, next) => {
 // ======================
 const requireAuth = (req, res, next) => {
   if (!req.session.user) {
-    req.flash('error', 'Your session has expired. Please log in again.');
+    req.flash('error', 'Your session has expired. Please log in');
     return res.redirect('/login');
   }
   next();
@@ -76,7 +76,7 @@ const requireAuth = (req, res, next) => {
 
 // Set storage engine for Photo Upload
 const storage = multer.diskStorage({
-  destination: path.join(__dirname, "../../static/uploads"), // Correct path
+  destination: path.join(__dirname, "../../static/uploads"),
   filename: (req, file, cb) => {
     cb(null, `profile-${req.session.user.id}${path.extname(file.originalname)}`);
   },
