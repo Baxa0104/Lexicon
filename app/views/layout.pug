@@ -1,8 +1,8 @@
 html(lang="en")
     head
         meta(charset="UTF-8")
-        meta(http-equiv="X-UA-Compatible" content="IE=edge")
-        meta(name="viewport" content="width=device-width, initial-scale=1.0")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
 
         script(language="javascript" src="/bootstrap/js/bootstrap.bundle.min.js")
         link(rel="stylesheet" href="/bootstrap/css/bootstrap.min.css")
@@ -21,7 +21,7 @@ html(lang="en")
             // Sidebar (Fixed)
             #sidebar.d-lg-flex.flex-column.flex-shrink-0.p-3.bg-white.shadow-sm.rounded.vh-100.position-fixed
                 .flex-column.h-100(id="sidebarContent")
-                    
+
                     // Close button inside sidebar (only visible on mobile)
                     button#closeSidebar.navbar-toggler(type="button")
                         i.bi.bi-x-lg
@@ -43,8 +43,9 @@ html(lang="en")
                             a.nav-link.d-flex.align-items-center.rounded.px-3.py-2.text-dark(class=currentRoute == '/rides' ? 'active bg-primary text-white' : '', href="/rides")
                                 i.bi.bi-bag-check-fill.me-2
                                 | Ride Request
+                        // Updated History Button
                         li.nav-item
-                            a.nav-link.d-flex.align-items-center.rounded.px-3.py-2.text-muted.disabled
+                            a.nav-link.d-flex.align-items-center.rounded.px-3.py-2.text-dark(class=currentRoute == '/history' ? 'active bg-primary text-white' : '', href="/history")
                                 i.bi.bi-hourglass-split.me-2
                                 | History
                         li.nav-item
