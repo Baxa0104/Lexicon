@@ -1,24 +1,106 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuites errors="0"
-            failures="0"
+<testsuites errors="3"
+            failures="1"
             tests="1">
 
   <testsuite name="Login Page" id="custom-tests.login"
-    errors="0" failures="0" hostname="" package="login" skipped="0"
-    tests="1" time="1.660" timestamp="">
+    errors="3" failures="1" hostname="" package="login" skipped="0"
+    tests="1" time="33.70" timestamp="">
   
-    <testcase name="should log in with valid credentials" classname="Login Page" time="1.657" assertions="4">
+    <testcase name="should log in with valid credentials" classname="Login Page" time="33.70" assertions="2">
+
+      <failure message="Timed out while waiting for element &lt;.container&gt; to be present for 5000 milliseconds. - expected &#34;visible&#34; but got: &#34;not found&#34; (5108ms)">    at DescribeInstance.&lt;anonymous&gt; (C:\Users\Bakhtiyor\Lexicon\custom-tests\login.js:16:14)</failure>
 
     
-
-    
-
-    
-
+    <error message="Timed out while waiting for element &lt;.container&gt; to be present for 5000 milliseconds. - expected [32m&#34;visible&#34;[39m but got: [31m&#34;not found&#34;[39m [90m(5108ms)[39m" type="error"><![CDATA[
+    Error
+    at DescribeInstance.&lt;anonymous&gt; (C:\Users\Bakhtiyor\Lexicon\custom-tests\login.js:16:14)
+    at Context.call (C:\Users\Bakhtiyor\Lexicon\node_modules\nightwatch\lib\testsuite\context.js:528:43)
+    at TestCase.run (C:\Users\Bakhtiyor\Lexicon\node_modules\nightwatch\lib\testsuite\testcase.js:58:31)
+    at Runnable.__runFn (C:\Users\Bakhtiyor\Lexicon\node_modules\nightwatch\lib\testsuite\index.js:842:80)
+    at Runnable.run (C:\Users\Bakhtiyor\Lexicon\node_modules\nightwatch\lib\testsuite\runnable.js:126:21)
+    at TestSuite.executeRunnable (C:\Users\Bakhtiyor\Lexicon\node_modules\nightwatch\lib\testsuite\index.js:1003:49)
+    at TestSuite.handleRunnable (C:\Users\Bakhtiyor\Lexicon\node_modules\nightwatch\lib\testsuite\index.js:1018:33)
+    at C:\Users\Bakhtiyor\Lexicon\node_modules\nightwatch\lib\testsuite\index.js:842:21
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async DefaultRunner.runTestSuite (C:\Users\Bakhtiyor\Lexicon\node_modules\nightwatch\lib\runner\test-runners\default.js:83:7)
+    ]]></error>
     
     </testcase>
   
 
+  
+    <system-err>
+       WebDriverError:   Unable to navigate to url http://localhost:3000: unknown error: net::ERR_CONNECTION_REFUSED
+  (Session info: chrome=135.0.7049.41)
+ WebDriverError
+   Error while running &#34;navigateTo&#34; command: [WebDriverError] Unable to navigate to url http://localhost:3000: unknown error: net::ERR_CONNECTION_REFUSED
+  (Session info: chrome=135.0.7049.41)
+
+    Error location:
+    C:\Users\Bakhtiyor\Lexicon\custom-tests\run.js:4
+    ––––––––––––––––––––––––––––––––––––––––––––––––
+     2 |     it(&#39;check the front page loads&#39;, function(browser) {
+     3 |       browser
+     4 |         .navigateTo(&#39;http://localhost:3000&#39;) 
+     5 |         .waitForElementVisible(&#39;body&#39;)
+     6 |     }); 
+    ––––––––––––––––––––––––––––––––––––––––––––––––
+
+ NoSuchElementError
+   An error occurred while running .setValue() command on &lt;input[name=&#34;email&#34;]&gt;: Timed out while waiting for element &#34;input[name=&#34;email&#34;]&#34; with &#34;css selector&#34; to be present for 5000 milliseconds.
+
+    Try fixing by :
+    1. Please inspect the html before the step
+    2. Verify if an element with the mentioned selector is present in the DOM tree
+
+    Error location:
+    C:\Users\Bakhtiyor\Lexicon\custom-tests\login.js:10
+    ––––––––––––––––––––––––––––––––––––––––––––––––––
+     8 |         // Step 2: Fill in login form (adjust selectors as per your page)
+     9 |         browser
+     10 |             .setValue(&#39;input[name=&#34;email&#34;]&#39;, &#39;test@gmail.com&#39;) // Enter email 
+     11 |             .setValue(&#39;input[name=&#34;password&#34;]&#39;, &#39;test&#39;) // Enter password
+     12 |             .click(&#39;button[type=&#34;submit&#34;]&#39;) // Click submit button
+    ––––––––––––––––––––––––––––––––––––––––––––––––––
+
+ NoSuchElementError
+   An error occurred while running .setValue() command on &lt;input[name=&#34;password&#34;]&gt;: Timed out while waiting for element &#34;input[name=&#34;password&#34;]&#34; with &#34;css selector&#34; to be present for 5000 milliseconds.
+    {&#34;value&#34;:null,&#34;status&#34;:0}
+
+    Try fixing by :
+    1. Please inspect the html before the step
+    2. Verify if an element with the mentioned selector is present in the DOM tree
+
+    Error location:
+    C:\Users\Bakhtiyor\Lexicon\custom-tests\login.js:11
+    ––––––––––––––––––––––––––––––––––––––––––––––––––
+     9 |         browser
+     10 |             .setValue(&#39;input[name=&#34;email&#34;]&#39;, &#39;test@gmail.com&#39;) // Enter email
+     11 |             .setValue(&#39;input[name=&#34;password&#34;]&#39;, &#39;test&#39;) // Enter password 
+     12 |             .click(&#39;button[type=&#34;submit&#34;]&#39;) // Click submit button
+     13 | 
+    ––––––––––––––––––––––––––––––––––––––––––––––––––
+
+ NoSuchElementError
+   An error occurred while running .click() command on &lt;button[type=&#34;submit&#34;]&gt;: Timed out while waiting for element &#34;button[type=&#34;submit&#34;]&#34; with &#34;css selector&#34; to be present for 5000 milliseconds.
+    {&#34;value&#34;:null,&#34;status&#34;:0}
+
+    Try fixing by :
+    1. Please inspect the html before the step
+    2. Verify if an element with the mentioned selector is present in the DOM tree
+
+    Error location:
+    C:\Users\Bakhtiyor\Lexicon\custom-tests\login.js:12
+    ––––––––––––––––––––––––––––––––––––––––––––––––––
+     10 |             .setValue(&#39;input[name=&#34;email&#34;]&#39;, &#39;test@gmail.com&#39;) // Enter email
+     11 |             .setValue(&#39;input[name=&#34;password&#34;]&#39;, &#39;test&#39;) // Enter password
+     12 |             .click(&#39;button[type=&#34;submit&#34;]&#39;) // Click submit button 
+     13 | 
+     14 |         // Step 3: Wait for successful login and check if redirected (e.g., to dashboard)
+    ––––––––––––––––––––––––––––––––––––––––––––––––––
+
+    </system-err>
   
 
     

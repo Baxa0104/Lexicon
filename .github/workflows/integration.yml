@@ -37,6 +37,11 @@ jobs:
           with:
             compose-file: "./docker-compose.yml"
 
+        - name: List files in the repo
+          run: |
+              ls -R
+          
+
         - name: get dependencies for tests
           run: sudo apt-get install xvfb
         - name: run the nightwatch tests
