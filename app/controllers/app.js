@@ -1,3 +1,7 @@
+// ======================
+// Imports
+// ======================
+
 const express = require("express");
 const app = express();
 const bcrypt = require('bcryptjs');
@@ -10,21 +14,19 @@ const mysqlSession = require("express-mysql-session")(session);
 const multer = require("multer");
 const path = require("path");
 
-
 // ======================
 // Configuration
 // ======================
 app.set('view engine', 'pug');
 app.set('views', './app/views');
-
-// ======================
-// Middleware
-// ======================
 app.use(express.static("static"));
 app.use('/bootstrap', express.static('node_modules/bootstrap/dist'));
 app.use('/bootstrap-icons', express.static('node_modules/bootstrap-icons'));
 app.use("/uploads", express.static(path.join(__dirname, "../../static/uploads")));
 
+// ======================
+// Middleware
+// ======================
 
 // Session configuration
 const sessionStore = new mysqlSession({
@@ -50,9 +52,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Global template variables
 app.use((req, res, next) => {
-  // Session and user data
   res.locals.userSession = req.session.user;
-  // Flash messages
   res.locals.success = req.flash('success');
   res.locals.error = req.flash('error');
   next();
@@ -63,7 +63,7 @@ app.use((req, res, next) => {
 // ======================
 const requireAuth = (req, res, next) => {
   if (!req.session.user) {
-    req.flash('error', 'Your session has expired. Please log in again.');
+    req.flash('error', 'Your session has expired. Please log in');
     return res.redirect('/login');
   }
   next();
@@ -76,7 +76,7 @@ const requireAuth = (req, res, next) => {
 
 // Set storage engine for Photo Upload
 const storage = multer.diskStorage({
-  destination: path.join(__dirname, "../../static/uploads"), // Correct path
+  destination: path.join(__dirname, "../../static/uploads"),
   filename: (req, file, cb) => {
     cb(null, `profile-${req.session.user.id}${path.extname(file.originalname)}`);
   },
@@ -178,6 +178,12 @@ app.get('/logout', (req, res) => {
 app.get("/", (req, res) => res.redirect('/dashboard'));
 
 app.get("/dashboard", requireAuth, async (req, res) => {
+
+  if (!req.session.user) {
+    req.flash('error', 'Session expired. Please log in again.');
+    return res.redirect('/login');
+  }
+
   try {
     res.render('dashboard', { 
       currentRoute: '/dashboard',
@@ -193,6 +199,12 @@ app.get("/dashboard", requireAuth, async (req, res) => {
 // Ride Management Routes
 // ----------------------
 app.get("/rides", async (req, res) => {
+
+  if (!req.session.user) {
+    req.flash('error', 'Session expired. Please log in again.');
+    return res.redirect('/login');
+  }
+
   try {
     const rides = await Ride.getAll(req.query.search);
     res.render('listing', {
@@ -208,6 +220,12 @@ app.get("/rides", async (req, res) => {
 });
 
 app.get("/rides/:id", async (req, res) => {
+
+  if (!req.session.user) {
+    req.flash('error', 'Session expired. Please log in again.');
+    return res.redirect('/login');
+  }
+
   try {
     const ride = await Ride.getById(req.params.id);
     ride.length ? res.render('listingDetails', { ride: ride[0] }) : res.status(404).send("Ride not found");
@@ -221,6 +239,12 @@ app.get("/rides/:id", async (req, res) => {
 // User Management Routes
 // ----------------------
 app.get("/social", async (req, res) => {
+
+  if (!req.session.user) {
+    req.flash('error', 'Session expired. Please log in again.');
+    return res.redirect('/login');
+  }
+
   try {
     const users = await User.getAll(req.query.category, req.query.search);
     res.render('social', {
@@ -237,6 +261,12 @@ app.get("/social", async (req, res) => {
 });
 
 app.get("/social/:id", async (req, res) => {
+
+  if (!req.session.user) {
+    req.flash('error', 'Session expired. Please log in again.');
+    return res.redirect('/login');
+  }
+
   try {
     const user = await User.getById(req.params.id);
     user.length 
@@ -252,6 +282,12 @@ app.get("/social/:id", async (req, res) => {
 // Account Management Routes
 // ----------------------
 app.get('/account/edit/profile', requireAuth, async (req, res) => {
+
+  if (!req.session.user) {
+    req.flash('error', 'Session expired. Please log in again.');
+    return res.redirect('/login');
+  }
+
   try {
     const user = await User.getById(req.session.user.id);
     res.render('editProfile', { user: user[0] });
@@ -262,6 +298,12 @@ app.get('/account/edit/profile', requireAuth, async (req, res) => {
 });
 
 app.post('/account/edit/profile', requireAuth, async (req, res) => {
+
+  if (!req.session.user) {
+    req.flash('error', 'Session expired. Please log in again.');
+    return res.redirect('/login');
+  }
+
   try {
     const { username, bio, phone_number, address } = req.body;
     
@@ -289,6 +331,12 @@ app.post('/account/edit/profile', requireAuth, async (req, res) => {
 });
 
 app.post("/account/edit/picture", requireAuth, upload.single("profile_pic"), async (req, res) => {
+
+  if (!req.session.user) {
+    req.flash('error', 'Session expired. Please log in again.');
+    return res.redirect('/login');
+  }
+
   try {
     if (!req.file) {
       req.flash("error", "Please upload an image file.");
@@ -313,10 +361,22 @@ app.post("/account/edit/picture", requireAuth, upload.single("profile_pic"), asy
 });
 
 app.get('/account/edit/password', requireAuth, (req, res) => {
+
+  if (!req.session.user) {
+    req.flash('error', 'Session expired. Please log in again.');
+    return res.redirect('/login');
+  }
+
   res.render('changePassword');
 });
 
 app.post('/account/edit/password', requireAuth, async (req, res) => {
+
+  if (!req.session.user) {
+    req.flash('error', 'Session expired. Please log in again.');
+    return res.redirect('/login');
+  }
+
   try {
     const { current_password, new_password, confirm_password } = req.body;
     const user = await User.getById(req.session.user.id);
@@ -344,11 +404,19 @@ app.post('/account/edit/password', requireAuth, async (req, res) => {
 
 // Render the delete confirmation page for current user (who is logged in)
 app.get('/account/delete', requireAuth, (req, res) => {
+  if (!req.session.user) {
+    req.flash('error', 'Session expired. Please log in again.');
+    return res.redirect('/login');
+  }
   res.render('deleteConfirmation');
 });
 
 // Handle account deletion for current user
 app.post('/account/delete', requireAuth, async (req, res) => {
+  if (!req.session.user) {
+    req.flash('error', 'Session expired. Please log in again.');
+    return res.redirect('/login');
+  }
   try {
     await User.deleteById(req.session.user.id);
     req.session.destroy(() => res.redirect('/login')); // After deleting, log out and redirect to login
@@ -361,6 +429,10 @@ app.post('/account/delete', requireAuth, async (req, res) => {
 
 // Admin Deleting Any User (by ID)
 app.get('/account/delete/:id', requireAuth, isAdmin, (req, res) => {
+  if (!req.session.user) {
+    req.flash('error', 'Session expired. Please log in again.');
+    return res.redirect('/login');
+  }
   const userId = req.params.id;
   res.render('deleteConfirmation', { userId }); // Pass userId to the view
 });
@@ -368,6 +440,10 @@ app.get('/account/delete/:id', requireAuth, isAdmin, (req, res) => {
 
 // Handle account deletion for a specific user (only accessible by admin)
 app.post('/account/delete/:id', requireAuth, isAdmin, async (req, res) => {
+  if (!req.session.user) {
+    req.flash('error', 'Session expired. Please log in again.');
+    return res.redirect('/login');
+  }
   const userId = req.params.id;
   try {
     await User.deleteById(userId); // Delete user by ID
@@ -382,6 +458,10 @@ app.post('/account/delete/:id', requireAuth, isAdmin, async (req, res) => {
 
 // Middleware to check if user is admin (only admins can delete other users)
 function isAdmin(req, res, next) {
+  if (!req.session.user) {
+    req.flash('error', 'Session expired. Please log in again.');
+    return res.redirect('/login');
+  }
   if (req.session.user.role !== 'Admin') {
     return res.status(403).send('Forbidden');
   }
