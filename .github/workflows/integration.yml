@@ -16,6 +16,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+        - name: Clear cache
+          run: |
+            rm -rf ~/.npm
+            rm -rf node_modules
         - name: check
           run: echo "Installing Dependencies!"
           # Install checkout the repo
