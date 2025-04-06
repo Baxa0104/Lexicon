@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites errors="1"
+            failures="1"
+            tests="1">
+
+  <testsuite name="google search with consent form - page objects" id="with-page-objects.google"
+    errors="1" failures="1" hostname="" package="with-page-objects" skipped="0"
+    tests="1" time="8.558" timestamp="">
+  
+    <testcase name="should find nightwatch.js in results" classname="google search with consent form - page objects" time="6.353" assertions="1">  <failure message="Timed out while waiting for element &lt;input[value=&#34;Google Search&#34;]&gt; to be present for 1000 milliseconds. - expected &#34;visible&#34; but got: &#34;not found&#34; (1091ms)">    at Page.submit (C:\Users\Bakhtiyor\Lexicon\nightwatch\page-objects\google\search.js:17:10)
+    at DescribeInstance.&lt;anonymous&gt; (C:\Users\Bakhtiyor\Lexicon\nightwatch\examples\with-page-objects\google.js:20:14)</failure>
+
+    
+    <error message="Timed out while waiting for element &lt;input[value=&#34;Google Search&#34;]&gt; to be present for 1000 milliseconds. - expected [32m&#34;visible&#34;[39m but got: [31m&#34;not found&#34;[39m [90m(1091ms)[39m" type="error"><![CDATA[
+    Error
+    at Command.executeCommand (C:\Users\Bakhtiyor\Lexicon\node_modules\nightwatch\lib\page-object\command-wrapper.js:281:22)
+    at Page.waitForElementVisible (C:\Users\Bakhtiyor\Lexicon\node_modules\nightwatch\lib\page-object\command-wrapper.js:86:27)
+    at Page.submit (C:\Users\Bakhtiyor\Lexicon\nightwatch\page-objects\google\search.js:17:10)
+    at DescribeInstance.&lt;anonymous&gt; (C:\Users\Bakhtiyor\Lexicon\nightwatch\examples\with-page-objects\google.js:20:14)
+    at Context.call (C:\Users\Bakhtiyor\Lexicon\node_modules\nightwatch\lib\testsuite\context.js:528:43)
+    at TestCase.run (C:\Users\Bakhtiyor\Lexicon\node_modules\nightwatch\lib\testsuite\testcase.js:58:31)
+    at Runnable.__runFn (C:\Users\Bakhtiyor\Lexicon\node_modules\nightwatch\lib\testsuite\index.js:842:80)
+    at Runnable.run (C:\Users\Bakhtiyor\Lexicon\node_modules\nightwatch\lib\testsuite\runnable.js:126:21)
+    at TestSuite.executeRunnable (C:\Users\Bakhtiyor\Lexicon\node_modules\nightwatch\lib\testsuite\index.js:1003:49)
+    at TestSuite.handleRunnable (C:\Users\Bakhtiyor\Lexicon\node_modules\nightwatch\lib\testsuite\index.js:1018:33)
+    ]]></error>
+    
+    </testcase>
+  
+
+  
+    <system-err>
+       InvalidSelectorError
+   invalid selector: An invalid or illegal selector was specified
+  (Session info: chrome=135.0.7049.41)
+ TimeoutError
+   An error occurred while running .setValue() command on &lt;Element [name=@searchBar]&gt;: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=135.0.7049.41)
+    {&#34;error&#34;:{&#34;name&#34;:&#34;NoSuchSessionError&#34;,&#34;remoteStacktrace&#34;:&#34;&#34;},&#34;status&#34;:-1,&#34;value&#34;:null}
+
+    Error location:
+    C:\Users\Bakhtiyor\Lexicon\nightwatch\examples\with-page-objects\google.js:19
+    ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+     17 | 
+     18 |   it(&#39;should find nightwatch.js in results&#39;, function(browser) {
+     19 |     homePage.setValue(&#39;@searchBar&#39;, &#39;Nightwatch.js&#39;); 
+     20 |     homePage.submit();
+     21 | 
+    ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+    </system-err>
+  
+
+    
+
+  
+  </testsuite>
+</testsuites>

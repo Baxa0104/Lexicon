@@ -1,1 +1,1 @@
-{"modules":{"tests\\initial":{"modulePath":"C:\\Users\\sohibnab\\Lexicon\\tests\\initial.js","status":"fail"},"tests\\pages":{"modulePath":"C:\\Users\\sohibnab\\Lexicon\\tests\\pages.js","status":"fail"}}}
+{"modules":{"custom-tests\\run":{"modulePath":"C:\\Users\\Bakhtiyor\\Lexicon\\custom-tests\\run.js","status":"fail"},"custom-tests\\login":{"modulePath":"C:\\Users\\Bakhtiyor\\Lexicon\\custom-tests\\login.js","status":"fail"}}}

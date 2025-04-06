@@ -1,0 +1,49 @@
+extends layout
+
+block content
+    // Search & Header Bar (Separate from the Grid)
+    .p-3.mb-4(style="max-width: 1000px; width: 100%; margin: 0 auto;")
+        .d-flex.justify-content-between.align-items-center.flex-wrap
+
+            // Page Title (Left)
+            h2.mb-0 Dashboard
+
+            // Search Bar (Right)
+            form.d-flex.align-items-center(method="GET" action="/dashboard")
+                input.form-control.me-2(style="width: 250px;" type="search" name="search" placeholder="Search dashboard content...")
+
+    hr
+
+    .container(style="max-width: 1000px; width: 100%;")
+        // Dashboard Content Section
+        .row
+            .col-12
+                .w-100.p-4
+                    h3.font-weight-bold Welcome, #{user.name}!
+                    p.text-muted Current system status: Pretending to understand blockchain 😬
+
+        // Dashboard Stats Section
+        .row.mt-4
+            // Total Bookings Card
+            .col-6.col-md-4.mb-4
+                .card.shadow-sm.bg-white.rounded.w-100
+                    .card-body.text-center
+                        i.bi.bi-bookmarks.display-4.text-primary
+                        h6.mt-2 Total Advertisements
+                        p.text-muted.small #{stats.totalBookings} listings created in total
+
+            // User's Bookings Card
+            .col-6.col-md-4.mb-4
+                .card.shadow-sm.bg-white.rounded.w-100
+                    .card-body.text-center
+                        i.bi.bi-person-check-fill.display-4.text-primary
+                        h6.mt-2 Your Bookings
+                        p.text-muted.small You have made #{stats.userBookings} bookings.
+
+            // CO2 Emission Card
+            .col-6.col-md-4.mb-4
+                .card.shadow-sm.bg-white.rounded.w-100
+                    .card-body.text-center
+                        i.bi.bi-cloud-sun.display-4.text-primary
+                        h6.mt-2 Your CO2 Emission
+                        p.text-muted.small Estimated CO2 emission is #{stats.co2Emission} kg.

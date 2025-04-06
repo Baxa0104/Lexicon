@@ -1,0 +1,14 @@
+extends formsLayout
+
+block content
+    .container.d-flex.flex-column.align-items-center.mt-5(style="max-width: 500px; width: 100%; padding: 0px;")
+        .card.shadow-sm.bg-white.rounded.p-4.mb-4.w-100
+            h2.text-danger Delete Account
+            p.text-muted.small Please confirm that you want to delete this account. This action cannot be undone.
+
+            // Dynamically set the form action based on whether the admin is deleting the current user's account or another user
+            form(method="POST" action=`/account/delete${userSession.id !== userId ? '/' + userId : ''}`)
+                .d-flex.justify-content-between
+                    button.btn.btn-danger(type="submit") Yes, Delete Account
+                    a.btn.btn-secondary(href=`/social${userSession.id !== userId ? '/' + userId : ''}`) No, Go Back
+

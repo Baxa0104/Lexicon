@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites errors="1"
+            failures="1"
+            tests="1">
+
+  <testsuite name="The Login Page" id="templates.login"
+    errors="1" failures="1" hostname="" package="templates" skipped="0"
+    tests="1" time="6.308" timestamp="">
+  
+    <testcase name="To check session cookie after successful login" classname="The Login Page" time="5.473" assertions="1">  <failure message="Testing if element &lt;&lt;css locator&gt;&gt; is present in 5000ms - expected &#34;is present&#34; but got: &#34;element could not be located&#34; (5382ms)">    at DescribeInstance.&lt;anonymous&gt; (C:\Users\Bakhtiyor\Lexicon\Nightwatch\templates\login.js:40:20)</failure>
+
+    
+    <error type="error"><![CDATA[
+    InvalidSelectorError: invalid selector: An invalid or illegal selector was specified
+  (Session info: chrome=135.0.7049.41)
+    at Object.throwDecodedError (C:\Users\Bakhtiyor\Lexicon\node_modules\selenium-webdriver\lib\error.js:521:15)
+    at parseHttpResponse (C:\Users\Bakhtiyor\Lexicon\node_modules\selenium-webdriver\lib\http.js:514:13)
+    at Executor.execute (C:\Users\Bakhtiyor\Lexicon\node_modules\selenium-webdriver\lib\http.js:446:28)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Driver.execute (C:\Users\Bakhtiyor\Lexicon\node_modules\selenium-webdriver\lib\webdriver.js:744:17)
+    at async Driver.findElements (C:\Users\Bakhtiyor\Lexicon\node_modules\selenium-webdriver\lib\webdriver.js:1072:17)
+    at async MethodMappings.locateMultipleElements (C:\Users\Bakhtiyor\Lexicon\node_modules\nightwatch\lib\transport\selenium-webdriver\method-mappings.js:386:31)
+    at async Object.locateMultipleElements (C:\Users\Bakhtiyor\Lexicon\node_modules\nightwatch\lib\transport\selenium-webdriver\actions.js:69:18)
+    ]]></error>
+    
+    </testcase>
+  
+
+  
+    <system-err>
+       InvalidSelectorError
+   invalid selector: An invalid or illegal selector was specified
+  (Session info: chrome=135.0.7049.41)
+ TimeoutError
+   An error occurred while running .setValue() command on &lt;Element [name=@searchBar]&gt;: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=135.0.7049.41)
+    {&#34;error&#34;:{&#34;name&#34;:&#34;NoSuchSessionError&#34;,&#34;remoteStacktrace&#34;:&#34;&#34;},&#34;status&#34;:-1,&#34;value&#34;:null}
+
+    Error location:
+    C:\Users\Bakhtiyor\Lexicon\nightwatch\examples\with-page-objects\google.js:19
+    ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+     17 | 
+     18 |   it(&#39;should find nightwatch.js in results&#39;, function(browser) {
+     19 |     homePage.setValue(&#39;@searchBar&#39;, &#39;Nightwatch.js&#39;); 
+     20 |     homePage.submit();
+     21 | 
+    ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+    </system-err>
+  
+
+    
+
+  
+  </testsuite>
+</testsuites>
