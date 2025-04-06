@@ -61,10 +61,33 @@ block content
 
                     // Action Buttons (No Justify Content)
                     .d-flex.mt-4.flex-wrap.gap-3
-                        a.btn.btn-success.disabled(href=`/book/#{ride.id}`) 📅 Book Ride
+                        if ride.available_seats > 0
+                            form(action=`/book/${ride.ride_id}`, method="POST")
+                                button.btn.btn-success(type="submit") 📅 Book Ride
+                        else
+                            button.btn.btn-danger(type="button", onclick="showNoSeatsPopup()") 🚫 No Seats Available
                         a.btn.btn-info(href=`/social/${ride.user_id}`) 💬 Contact Driver
 
         // No Ride Found Message
         if !ride
             .container.rounded.bg-light.p-4.shadow-sm.text-center
                 p No ride details found. 😔
+
+    // Modal for No Seats Available
+    div#noSeatsModal.modal.fade(tabindex="-1" aria-labelledby="noSeatsModalLabel" aria-hidden="true")
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    h5#noSeatsModalLabel.modal-title 🚫 No Seats Available
+                    button.btn-close(type="button", data-bs-dismiss="modal", aria-label="Close")
+                .modal-body
+                    p Sorry, this ride is fully booked! Please check other rides or try again later.
+                .modal-footer
+                    button.btn.btn-secondary(type="button", data-bs-dismiss="modal") Close
+
+    // Script to Show the Modal
+    script.
+        function showNoSeatsPopup() {
+            var modal = new bootstrap.Modal(document.getElementById('noSeatsModal'));
+            modal.show();
+        }
