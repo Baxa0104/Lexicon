@@ -3,70 +3,91 @@ extends layout
 block content
     .container.d-flex.flex-column.align-items-center(style="max-width: 1000px; width: 100%; padding: 0px;")
 
-        // Ride Details Section (Card with Image on the Left)
-        .card.shadow-sm.bg-white.rounded.p-4.mb-4.w-100
-            .row.g-4
-                // Ride Image Section
-                .col-md-4.d-flex.align-items-center
-                    if ride.ride_pics
-                        img.shadow-sm(
-                            src=ride.ride_pics, 
-                            alt="Ride Image", 
-                            class="img-fluid rounded", 
-                            style="height: 200px; width: 100%; object-fit: cover;"
-                        )
+        // --- TOASTS ---  
+        // Error Toast
+        if error.length
+            div.toast-container
+                .toast.show(style="position: fixed; bottom: 30px; right: 30px; z-index: 1050;")
+                    .toast-header
+                        strong.me-auto Error
+                        button.btn-close(type="button", data-bs-dismiss="toast", aria-label="Close")
+                    .toast-body
+                        p= error
+
+        // Success Toast
+        if success.length
+            div.toast-container
+                .toast.toast.show(style="position: fixed; bottom: 30px; right: 30px; z-index: 1050;")
+                    .toast-header
+                        strong.me-auto Success
+                        button.btn-close(type="button", data-bs-dismiss="toast", aria-label="Close")
+                    .toast-body
+                        p= success
+
+
+        .row.g-4
+            // Ride Image Section
+            .col-md-4.d-flex
+                if ride.ride_pics
+                    img.shadow-sm(
+                        src=ride.ride_pics, 
+                        alt="Ride Image", 
+                        class="img-fluid rounded", 
+                        style="height: 200px; width: 100%; object-fit: cover;"
+                    )
+                else
+                    div.bg-light.d-flex.align-items-center.justify-content-center.shadow-sm(
+                        style="height: 200px; width: 100%;"
+                    )
+                        i.bi.bi-car-front.display-1.text-secondary
+
+            // Ride Info Section
+            .col-md-8
+                h2.text-primary.mb-3 #{ride.short_name} 🚗
+                p.text-muted.mb-4 #{ride.ride_details || "No description available"} 
+
+                hr
+
+                .row.g-3
+                    .col-md-6
+                        p.mb-2 
+                            strong 🏠 Origin Address:  
+                            |  #{ride.origin_address} 
+                    .col-md-6
+                        p.mb-2 
+                            strong 🗺️  Destination Address:  
+                            | #{ride.destination_address}
+                .row.g-3
+                    .col-md-6
+                        p.mb-2 
+                            strong 🕒 Date & Time:  
+                            | #{new Date(ride.departure_date).toISOString().split('T')[0]} &
+                            | #{ride.departure_time}
+                    .col-md-6
+                        p.mb-2 
+                            strong 🪑 Available Seats:  
+                            |  #{ride.available_seats} 
+
+                // Driver Details
+                .mt-4
+                    p.mb-2 
+                        strong 👤 Driver Name:  
+                        |  #{ride.user_name} 
+                    p.mb-2 
+                        strong 📞 Phone:  
+                        |  #{ride.phone_number || "N/A"} 
+                    p.mb-2 
+                        strong 📧 Email:  
+                        |  #{ride.email} 
+
+                // Action Buttons
+                .d-flex.mt-4.flex-wrap.gap-3
+                    if ride.available_seats > 0
+                        // Button to trigger confirmation modal
+                        button.btn.btn-success(type="button", onclick="showConfirmBookingModal()") 📅 Book Ride
                     else
-                        div.bg-light.d-flex.align-items-center.justify-content-center.shadow-sm(
-                            style="height: 200px; width: 100%;"
-                        )
-                            i.bi.bi-car-front.display-1.text-secondary
-
-                // Ride Info Section
-                .col-md-8
-                    h2.text-primary.mb-3 #{ride.short_name} 🚗
-                    p.text-muted.mb-4 #{ride.ride_details || "No description available"} 
-
-                    hr
-
-                    .row.g-3
-                        .col-md-6
-                            p.mb-2 
-                                strong Origin Address:  
-                                | #{ride.origin_address} 🏠
-                        .col-md-6
-                            p.mb-2 
-                                strong Destination Address:  
-                                | #{ride.destination_address} 🏖️
-                    .row.g-3
-                        .col-md-6
-                            p.mb-2 
-                                strong Date & Time:  
-                                | #{ride.departure_date} & #{ride.departure_time} 🕒
-                        .col-md-6
-                            p.mb-2 
-                                strong Available Seats:  
-                                | #{ride.available_seats} 🪑
-
-                    // Driver Details
-                    .mt-4
-                        p.mb-2 
-                            strong Driver Name:  
-                            | #{ride.user_name} 👤
-                        p.mb-2 
-                            strong Phone:  
-                            | #{ride.phone_number || "N/A"} 📞
-                        p.mb-2 
-                            strong Email:  
-                            | #{ride.email} 📧
-
-                    // Action Buttons
-                    .d-flex.mt-4.flex-wrap.gap-3
-                        if ride.available_seats > 0
-                            // Button to trigger confirmation modal
-                            button.btn.btn-success(type="button", onclick="showConfirmBookingModal()") 📅 Book Ride
-                        else
-                            button.btn.btn-danger(type="button", onclick="showNoSeatsPopup()") 🚫 No Seats Available
-                        a.btn.btn-info(href=`/social/${ride.user_id}`) 💬 Contact Driver
+                        button.btn.btn-danger(type="button", onclick="showNoSeatsPopup()") 🚫 No Seats Available
+                    a.btn.btn-info(href=`/social/${ride.user_id}`) 💬 Contact Driver
 
         // No Ride Found
         if !ride
@@ -100,20 +121,9 @@ block content
                     p Are you sure you want to book this ride?
                 .modal-footer
                     button.btn.btn-secondary(type="button", data-bs-dismiss="modal") Cancel
+                    // Unique ID for the form
                     form#confirmBookingForm(action=`/book/${ride.ride_id}`, method="POST")
-                        button.btn.btn-primary(type="submit", onclick="showBookedMessage(event)") Confirm
-
-    // Modal: Booking Success
-    div#bookedSuccessModal.modal.fade(tabindex="-1" aria-labelledby="bookedSuccessModalLabel" aria-hidden="true")
-        .modal-dialog
-            .modal-content
-                .modal-header
-                    h5#bookedSuccessModalLabel.modal-title 🎉 Booking Confirmed
-                    button.btn-close(type="button", data-bs-dismiss="modal", aria-label="Close")
-                .modal-body
-                    p You can find your ride details in the History menu.
-                .modal-footer
-                    button.btn.btn-success(type="button", onclick="submitBookingForm()") Ok, Thanks!
+                        button.btn.btn-primary(type="submit") Confirm
 
     //
     // --- SCRIPT SECTION ---
@@ -128,16 +138,11 @@ block content
             var modal = new bootstrap.Modal(document.getElementById('confirmBookingModal'));
             modal.show();
         }
-
-        function showBookedMessage(event) {
-            event.preventDefault(); // Stop form from submitting immediately
-            var confirmModal = bootstrap.Modal.getInstance(document.getElementById('confirmBookingModal'));
-            confirmModal.hide();
-
-            var successModal = new bootstrap.Modal(document.getElementById('bookedSuccessModal'));
-            successModal.show();
-        }
-
-        function submitBookingForm() {
-            document.getElementById('confirmBookingForm').submit();
-        }
+        
+        // Initialize and show toasts on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            var toastElList = [].slice.call(document.querySelectorAll('.toast'));
+            toastElList.forEach(function(toastEl) {
+                new bootstrap.Toast(toastEl).show();
+            });
+        });

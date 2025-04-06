@@ -1,38 +1,115 @@
 extends layout
 
 block content
-    .container.d-flex.flex-column.align-items-center(style="max-width: 1000px; width: 100%; padding: 0px;")
-        h2.text-center.mb-4 Ride History 📜
+    .container.d-flex.flex-column.align-items-left(style="max-width: 1000px; width: 100%; padding: 0px;")
+        h2.text-left.mb-4 Ride History
+        hr
 
-        if data.length
-            each ride in data
+        // Section: Created by me
+        h4.mb-3 Created by Me
+        if createdByMe.length
+            each ride in createdByMe
                 .card.shadow-sm.mb-3.p-3.w-100
                     .row.g-3
                         .col-md-6
                             p.mb-1 
                                 strong Origin: 
-                                | #{ride.origin_address} 🏠
+                                | #{ride.origin_address}
                         .col-md-6
                             p.mb-1 
                                 strong Destination: 
-                                | #{ride.destination_address} 🏖️
+                                | #{ride.destination_address}
                     .row.g-3
                         .col-md-6
                             p.mb-1 
                                 strong Departure Time: 
-                                | #{ride.departure_time} 🕒
+                                | #{ride.departure_time}
                         .col-md-6
                             p.mb-1 
-                                strong Booking Time: 
-                                | #{ride.booking_time} 🗓️
+                                strong Ride Name: 
+                                | #{ride.short_name}
                     .row.g-3
                         .col-md-6
                             p.mb-1 
                                 strong Status: 
-                                | #{ride.status} 📌
+                                | #{ride.status} 
+                        .col-md-6
+                            p.mb-1 
+                                strong Ride Details: 
+                                | #{ride.ride_details} 
+        else
+            p.text-muted No rides created. 😔
+
+        hr
+
+        // Section: My Bookings
+        h4.mb-3 My Bookings
+        if myBookings.length
+            each ride in myBookings
+                .card.shadow-sm.mb-3.p-3.w-100
+                    .row.g-3
+                        .col-md-6
+                            p.mb-1 
+                                strong Origin: 
+                                | #{ride.origin_address}
+                        .col-md-6
+                            p.mb-1 
+                                strong Destination: 
+                                | #{ride.destination_address}
+                    .row.g-3
+                        .col-md-6
+                            p.mb-1 
+                                strong Departure Time: 
+                                | #{ride.departure_time}
+                        .col-md-6
+                            p.mb-1 
+                                strong Booking Time: 
+                                | #{ride.booking_time}
+                    .row.g-3
+                        .col-md-6
+                            p.mb-1 
+                                strong Status: 
+                                | #{ride.status}
                         .col-md-6
                             p.mb-1 
                                 strong Payment Status: 
-                                | #{ride.payment_status} 💳
+                                | #{ride.payment_status}
         else
-            p.text-muted No ride requests found. 😔
+            p.text-muted No bookings found. 😔
+
+        hr
+
+        // Section: Past Bookings
+        h4.mb-3 Past Bookings
+        if pastBookings.length
+            each ride in pastBookings
+                .card.shadow-sm.mb-3.p-3.w-100
+                    .row.g-3
+                        .col-md-6
+                            p.mb-1 
+                                strong Origin: 
+                                | #{ride.origin_address}
+                        .col-md-6
+                            p.mb-1 
+                                strong Destination: 
+                                | #{ride.destination_address}
+                    .row.g-3
+                        .col-md-6
+                            p.mb-1 
+                                strong Departure Time: 
+                                | #{ride.departure_time}
+                        .col-md-6
+                            p.mb-1 
+                                strong Booking Time: 
+                                | #{ride.booking_time}
+                    .row.g-3
+                        .col-md-6
+                            p.mb-1 
+                                strong Status: 
+                                | #{ride.status}
+                        .col-md-6
+                            p.mb-1 
+                                strong Payment Status: 
+                                | #{ride.payment_status}
+        else
+            p.text-muted No past bookings found. 😔

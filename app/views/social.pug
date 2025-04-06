@@ -2,11 +2,11 @@ extends layout
 
 block content
     // Search & Header Bar
-    .bg-white.shadow-sm.rounded.p-3.mb-4(style="max-width: 1000px; width: 100%; margin: 0 auto;")
+    .p-3.mb-4(style="max-width: 1000px; width: 100%; margin: 0 auto;")
         .d-flex.justify-content-between.align-items-center.flex-wrap
 
             // Page Title
-            h4.text-dark.mb-0 Social Page
+            h2.text-dark.mb-0 Social Page
 
             // Search & Category Selector (Right)
             form.d-flex.align-items-center(method="GET" action="/social")
@@ -21,7 +21,7 @@ block content
                     option(value="") All Categories
                     option(value="Driver" selected=(category === 'Driver')) Driver
                     option(value="Passenger" selected=(category === 'Passenger')) Passenger
-
+    hr
     .container(style="max-width: 1000px; width: 100%;")
         // Users List Section (Grid)
         .row

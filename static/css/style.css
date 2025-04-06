@@ -303,3 +303,11 @@ button, a, .card {
         min-height: 44px;
     }
 }
+
+/* Better touch targets for mobile */
+@media (max-width: 768px) {
+
+    .custom_search {
+        width: 120px !important;
+    }
+}

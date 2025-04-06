@@ -28,7 +28,7 @@ class Ride {
     const sql = `
       SELECT 
         r.*, 
-        u.user_name, u.email, u.phone_number, u.address
+        u.user_name, u.email, u.phone_number, u.address, u.user_id
       FROM ride r 
       JOIN user u ON r.driver_id = u.user_id 
       WHERE r.ride_id = ?
@@ -55,6 +55,44 @@ class Ride {
       ride_pics,               // Ride Image URL
       'Scheduled'              // Status (hardcoded as 'Scheduled')
     ]);
+  }
+
+   // Get rides created by the user (driver)
+   static async getRidesCreatedByUser(userId) {
+    const sql = `
+      SELECT r.ride_id, r.origin_address, r.destination_address, r.departure_time, 
+             r.short_name, r.ride_details, r.status, r.ride_pics
+      FROM ride AS r
+      WHERE r.driver_id = ?
+      ORDER BY r.departure_time DESC
+    `;
+    return db.query(sql, [userId]);
+  }
+
+  // Get rides booked by the user (passenger)
+  static async getRidesBookedByUser(userId) {
+    const sql = `
+      SELECT r.ride_id, r.origin_address, r.destination_address, r.departure_time, 
+             b.booking_time, b.status, b.payment_status
+      FROM booking AS b
+      JOIN ride AS r ON b.ride_id = r.ride_id
+      WHERE b.user_id = ?
+      ORDER BY b.booking_time DESC
+    `;
+    return db.query(sql, [userId]);
+  }
+
+  // Get past bookings (completed or canceled)
+  static async getPastBookingsByUser(userId) {
+    const sql = `
+      SELECT r.ride_id, r.origin_address, r.destination_address, r.departure_time, 
+             b.booking_time, b.status, b.payment_status
+      FROM booking AS b
+      JOIN ride AS r ON b.ride_id = r.ride_id
+      WHERE b.user_id = ? AND (b.status = 'Completed' OR b.status = 'Canceled')
+      ORDER BY b.booking_time DESC
+    `;
+    return db.query(sql, [userId]);
   }
   
 }

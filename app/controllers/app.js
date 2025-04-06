@@ -304,14 +304,19 @@ app.get("/social/:id", async (req, res) => {
 
   try {
     const user = await User.getById(req.params.id);
-    user.length 
-      ? res.render('profile', { user: user[0] })
-      : res.status(404).send("User not found");
+
+    // Check if the user object is null or undefined
+    if (user && user.length > 0) {
+      res.render('profile', { user: user[0] });
+    } else {
+      res.status(404).send("User not found");
+    }
   } catch (err) {
     console.error("Profile Error:", err);
     res.status(500).send("Internal Server Error");
   }
 });
+
 
 // ----------------------
 // Account Management Routes
@@ -521,89 +526,78 @@ app.get('/book/:ride_id', (req, res) => {
 });
 
 
-// Route for booking a ride
-app.post('/book/:ride_id', (req, res) => {
-  const rideId = req.params.ride_id;
+// Route to handle booking a ride
+// Route to handle booking a ride
+app.post('/book/:rideId', requireAuth, async (req, res) => {
   const userId = req.session.user.id;
-  const status = 'pending';
-  const paymentStatus = 'pending';
+  const rideId = req.params.rideId;
 
-  // Check if the ride exists and has available seats
-  const sqlCheck = 'SELECT available_seats FROM ride WHERE ride_id = ?';
-  db.query(sqlCheck, [rideId])
-      .then(results => {
-          if (results.length > 0 && results[0].available_seats > 0) {
-              // SQL query to insert the booking
-              const bookingSql = `
-                  INSERT INTO booking (ride_id, user_id, status, payment_status) 
-                  VALUES (?, ?, ?, ?)
-              `;
-              db.query(bookingSql, [rideId, userId, status, paymentStatus])
-                  .then(() => {
-                      // Update available seats in the ride table
-                      const updateSeatsSql = `
-                          UPDATE ride 
-                          SET available_seats = available_seats - 1 
-                          WHERE ride_id = ?
-                      `;
-                      return db.query(updateSeatsSql, [rideId]);
-                  })
-                  .then(() => {
-                      req.flash('success', 'Booking successful!');
-                      res.redirect(`/rides/${rideId}`);
-                  })
-                  .catch(err => {
-                      console.error('Booking Error:', err);
-                      req.flash('error', 'Error during booking.');
-                      res.redirect(`/rides/${rideId}`);
-                  });
-          } else {
-              req.flash('error', 'No seats available for this ride.');
-              res.redirect(`/rides/${rideId}`);
-          }
-      })
-      .catch(err => {
-          console.error('Database Error:', err);
-          req.flash('error', 'Error retrieving ride.');
-          res.redirect(`/rides/${rideId}`);
-      });
+  try {
+    const checkBookingSql = `SELECT * FROM booking WHERE ride_id = ? AND user_id = ?`;
+    const existingBooking = await db.query(checkBookingSql, [rideId, userId]);
+
+    if (existingBooking.length > 0) {
+      req.flash('error', 'You have already booked this ride.');
+      return res.redirect(`/rides/${rideId}`);
+    }
+
+    const checkSeatsSql = `SELECT available_seats FROM ride WHERE ride_id = ?`;
+    const ride = await db.query(checkSeatsSql, [rideId]);
+
+    if (ride.length === 0 || ride[0].available_seats <= 0) {
+      req.flash('error', 'No available seats for this ride.');
+      return res.redirect(`/rides/${rideId}`);
+    }
+
+    const bookingSql = `INSERT INTO booking (user_id, ride_id, booking_time, status) VALUES (?, ?, NOW(), 'Pending')`;
+    await db.query(bookingSql, [userId, rideId]);
+
+    const updateSeatsSql = `UPDATE ride SET available_seats = available_seats - 1 WHERE ride_id = ?`;
+    await db.query(updateSeatsSql, [rideId]);
+
+    req.flash('success', 'Your booking has been successful!');
+    res.redirect(`/rides/${rideId}`);
+  } catch (err) {
+    console.error("Booking Error:", err);
+    req.flash('error', 'Error booking the ride.');
+    res.redirect(`/rides/${rideId}`);
+  }
 });
+
 
 
 // Route to fetch requested rides (history)
 app.get('/history', requireAuth, async (req, res) => {
   try {
-      const userId = req.session.user.id;
+    const userId = req.session.user.id;
 
-      // Query to fetch rides the user has requested (booked)
-      const sql = `
-          SELECT r.ride_id, r.origin_address, r.destination_address, r.departure_time, 
-                 b.booking_time, b.status, b.payment_status
-          FROM booking AS b
-          JOIN ride AS r ON b.ride_id = r.ride_id
-          WHERE b.user_id = ?
-          ORDER BY b.booking_time DESC
-      `;
-      
-      const results = await db.query(sql, [userId]);
+    // Use the model functions to fetch data
+    const createdByMe = await Ride.getRidesCreatedByUser(userId);
+    const myBookings = await Ride.getRidesBookedByUser(userId);
+    const pastBookings = await Ride.getPastBookingsByUser(userId);
 
-      // Render the history page with the results
-      res.render('history', {
-          title: 'Ride History',
-          heading: 'Your Ride Requests',
-          data: results
-      });
+    // Render the history page with the results
+    res.render('history', {
+      title: 'Ride History',
+      heading: 'Your Ride History',
+      createdByMe: createdByMe,
+      myBookings: myBookings,
+      pastBookings: pastBookings,
+      currentRoute: "/history"
+    });
   } catch (err) {
-      console.error("History Fetching Error:", err);
-      req.flash('error', 'Error retrieving ride history.');
-      res.redirect('/dashboard');
+    console.error("History Fetching Error:", err);
+    req.flash('error', 'Error retrieving ride history.');
+    res.redirect('/dashboard');
   }
 });
 
 
 // GET route to show ride creation form
 app.get('/create/ride', requireAuth, isDriver, (req, res) => {
-  res.render('createRide');
+  res.render('createRide', {
+    currentRoute: "/create/ride"
+  });
 });
 
 

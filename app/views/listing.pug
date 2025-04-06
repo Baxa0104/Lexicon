@@ -1,31 +1,27 @@
 extends layout
 
 block content
-    // Search & Header Bar
-    .bg-white.shadow-sm.rounded.p-3.mb-4(style="max-width: 1000px; width: 100%; margin: 0 auto;")
+    .p-3.mb-4(style="max-width: 1000px; width: 100%; margin: 0 auto;")
         .d-flex.justify-content-between.align-items-center.flex-wrap
 
-            // Page Title
-            h4.text-dark.mb-0 Ride Requests
+            h2.text-dark.mb-0 Ride Requests
 
-            // Search Form
-            form.d-flex.align-items-center(method="GET" action="/rides")
-                input.form-control.me-2(
-                    style="width: 250px;" 
+            form.d-flex(method="GET" action="/rides")
+                input.form-control.me-2.custom_search(
+                    style="width: 300px;" 
                     type="search" 
                     name="search" 
-                    placeholder="Search by Driver // Destination Address" 
+                    placeholder="Search by Driver or Destination" 
                     value=(search || '') 
                 )
-
+    hr
     .container(style="max-width: 1000px; width: 100%;")
-        // Rides List Section (Grid)
+
         .row
             each ride in data
                 .col-6.col-md-4.col-lg-3.mb-4 
                     .card.shadow-sm.bg-white.rounded.w-100.h-100
 
-                        // Ride Image (Consistent Styling)
                         if ride.ride_pics
                             img.card-img-top(
                                 src=ride.ride_pics, 
@@ -39,18 +35,29 @@ block content
                             )
                                 i.bi.bi-image.display-1.text-secondary
 
-                        // Ride Info (Consistent Formatting)
-                        .card-body.text-center.p-2
-                            h6.mb-1 
-                                a.text-primary.text-decoration-none(href=`/rides/${ride.ride_id}`) #{ride.short_name}
+                        .card-body.p-2
+                            h5.mb-1 
+                                a.text-primary.text-decoration-none.text_center(href=`/rides/${ride.ride_id}`) #{ride.short_name}
 
                             p.mb-1.text-muted.small
-                                strong Driver:  
+                                strong 🚖 Driver:  
                                 | #{ride.driver_name}
 
                             p.text-muted.small.mb-0
-                                strong Date of Departure:  
-                                | #{ride.departure_date}
+                                strong 🏠 Origin address:  
+                                | #{ride.origin_address}
+
+                            p.text-muted.small.mb-0
+                                strong 🗺️ Destination address:  
+                                | #{ride.destination_address}
+
+                            p.text-muted.small.mb-0
+                                strong 📅 Departure Date:  
+                                | #{new Date(ride.departure_date).toISOString().split('T')[0]}
+
+                            p.text-muted.small.mb-0
+                                strong ⌚ Departure Time:  
+                                | #{ride.departure_time}
 
     if !data.length
         p.text-center No rides found.
