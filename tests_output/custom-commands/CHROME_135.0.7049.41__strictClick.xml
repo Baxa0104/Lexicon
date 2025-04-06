@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites errors="0"
+            failures="1"
+            tests="1">
+
+  <testsuite name="custom-commands.strictClick" id="custom-commands.strictClick"
+    errors="0" failures="1" hostname="" package="custom-commands" skipped="0"
+    tests="1" time="0.1400" timestamp="">
+  
+    <testcase name="command" classname="custom-commands.strictClick" time="0.08800" assertions="1">  <failure message="this.waitForElementVisible is not a function">TypeError: this.waitForElementVisible is not a function
+    at Object.command (C:\Users\Bakhtiyor\Lexicon\Nightwatch\custom-commands\strictClick.js:17:8)</failure>
+
+    
+    </testcase>
+  
+
+  
+    <system-err>
+       InvalidSelectorError
+   invalid selector: An invalid or illegal selector was specified
+  (Session info: chrome=135.0.7049.41)
+ TimeoutError
+   An error occurred while running .setValue() command on &lt;Element [name=@searchBar]&gt;: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=135.0.7049.41)
+    {&#34;error&#34;:{&#34;name&#34;:&#34;NoSuchSessionError&#34;,&#34;remoteStacktrace&#34;:&#34;&#34;},&#34;status&#34;:-1,&#34;value&#34;:null}
+
+    Error location:
+    C:\Users\Bakhtiyor\Lexicon\nightwatch\examples\with-page-objects\google.js:19
+    ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+     17 | 
+     18 |   it(&#39;should find nightwatch.js in results&#39;, function(browser) {
+     19 |     homePage.setValue(&#39;@searchBar&#39;, &#39;Nightwatch.js&#39;); 
+     20 |     homePage.submit();
+     21 | 
+    ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+    </system-err>
+  
+
+    
+
+  
+  </testsuite>
+</testsuites>

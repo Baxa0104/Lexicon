@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites errors="0"
+            failures="0"
+            tests="1">
+
+  <testsuite name="Login Page" id="custom-tests.login"
+    errors="0" failures="0" hostname="" package="login" skipped="0"
+    tests="1" time="1.660" timestamp="">
+  
+    <testcase name="should log in with valid credentials" classname="Login Page" time="1.657" assertions="4">
+
+    
+
+    
+
+    
+
+    
+    </testcase>
+  
+
+  
+
+    
+
+  
+  </testsuite>
+</testsuites>

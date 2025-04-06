@@ -20,5 +20,12 @@
     "pug": "^3.0.3",
     "sqlite3": "^5.0.2",
     "supervisor": "^0.12.0"
+  },
+  "devDependencies": {
+    "nightwatch": "^3.12.1"
+  },
+  "scripts": {
+    "start": "supervisor index.js",
+    "test": "nightwatch --env chrome ./custom-tests"
   }
 }
