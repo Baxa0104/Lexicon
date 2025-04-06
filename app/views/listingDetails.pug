@@ -1,8 +1,8 @@
 extends layout
 
 block content
-    .container.d-flex.flex-column.align-items-center(style="max-width: 1000px; width: 100%; padding: 0px;")
-
+    .container.d-flex.flex-column(style="max-width: 1000px; width: 100%; padding: 0px;")
+        h2.mb-4 Ride Details
         // --- TOASTS ---  
         // Error Toast
         if error.length
@@ -78,7 +78,11 @@ block content
                         |  #{ride.phone_number || "N/A"} 
                     p.mb-2 
                         strong 📧 Email:  
-                        |  #{ride.email} 
+                        |  #{ride.email}
+
+                    p.mb-2 
+                        strong 💰 Price (per seat):  
+                        |  £#{ride.price}  
 
                 // Action Buttons
                 .d-flex.mt-4.flex-wrap.gap-3

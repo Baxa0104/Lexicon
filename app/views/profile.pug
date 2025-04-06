@@ -1,18 +1,21 @@
 extends layout
 
 block content
-    .container.d-flex.flex-column.align-items-center(style="max-width: 1000px; width: 100%; padding: 0px;")
+    .container.d-flex.flex-column(style="max-width: 1000px; width: 100%; padding: 0px;")
+
+        h2.mb-4 User Profile
+
         if error.length
             .alert.alert-danger= error
         if success.length
             .alert.alert-success= success
         
         // User Profile Section (Fixed Size)
-        .card.shadow-sm.bg-white.rounded.p-4.mb-4.w-100
+        .p-4.mb-4.w-100
             .row.g-4
                 // Profile Image + Button
                 .col-md-4.d-flex.flex-column.align-items-center
-                    div#profile-container(style="width: 100%; height: 180px; position: relative;")
+                    div#profile-container(style="width: 100%; height: 100%; position: relative;")
                         if user.profile_pic
                             img#profile-preview.shadow-sm(
                                 src=user.profile_pic, 
@@ -61,10 +64,11 @@ block content
                         if user.user_id === userSession.id
                             a.btn.btn-primary(href="/account/edit/profile") Edit Profile
                             a.btn.btn-secondary(href="/account/edit/password") Change Password
+            hr
 
         if user.user_id === userSession.id
             // Danger Zone Section
-            .card.shadow-sm.bg-white.rounded.p-4.border-danger.w-100
+            .p-4.border-danger.w-100
                 h4.text-danger Danger Zone
                 p.text-muted Be careful with these actions.
 

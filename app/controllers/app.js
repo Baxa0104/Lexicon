@@ -14,6 +14,7 @@ const mysqlSession = require("express-mysql-session")(session);
 const multer = require("multer");
 const path = require("path");
 const fs = require('fs');
+const Dashboard = require('../models/Dashboard');
 
 // ======================
 // Configuration
@@ -213,20 +214,24 @@ app.get('/logout', (req, res) => {
 app.get("/", (req, res) => res.redirect('/dashboard'));
 
 app.get("/dashboard", requireAuth, async (req, res) => {
-
   if (!req.session.user) {
-    req.flash('error', 'Session expired. Please log in again.');
-    return res.redirect('/login');
+      req.flash('error', 'Session expired. Please log in again.');
+      return res.redirect('/login');
   }
 
   try {
-    res.render('dashboard', { 
-      currentRoute: '/dashboard',
-      user: req.session.user
-    });
+      // Fetch dashboard stats for the logged-in user
+      const dashboardStats = await Dashboard.getUserDashboardStats(req.session.user.id);
+
+      // Render the dashboard with user data and stats
+      res.render('dashboard', { 
+          currentRoute: '/dashboard',
+          user: req.session.user,
+          stats: dashboardStats, // Pass the stats data to the template
+      });
   } catch (err) {
-    console.error("Dashboard Error:", err);
-    res.status(500).send("Internal Server Error");
+      console.error("Dashboard Error:", err);
+      res.status(500).send("Internal Server Error");
   }
 });
 

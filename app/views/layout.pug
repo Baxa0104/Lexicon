@@ -9,12 +9,19 @@ html(lang="en")
         link(rel="stylesheet" href="/bootstrap-icons/font/bootstrap-icons.css")
         link(rel="stylesheet" href="/css/style.css")
 
+        link(rel="icon" type="image/png" href="favicon/favicon-96x96.png" sizes="96x96")
+        link(rel="icon" type="image/svg+xml" href="favicon/favicon.svg")
+        link(rel="shortcut icon" href="favicon/favicon.ico")
+        link(rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png")
+        link(rel="manifest" href="favicon/site.webmanifest")
+
+
         title PeerRide
 
     body
         .mobile-header
             button#sidebarToggle.navbar-toggler.bi.bi-list
-            .mobile-header-title PeerRide Menu
+            .mobile-header-title PeerRide
 
         // Wrapper using Bootstrap flexbox (Sidebar + Content)
         .d-flex
@@ -26,8 +33,13 @@ html(lang="en")
                     button#closeSidebar.navbar-toggler(type="button")
                         i.bi.bi-x-lg
 
-                    a.d-flex.align-items-center.mb-3.mb-md-0.me-md-auto.link-dark.text-decoration-none(href="/")
-                        span.fs-4 PeerRide
+                    // Logo + App Name container
+                    .div.d-flex.align-items-center.justify-content-center.mb-4
+                        // App Name
+                        // Logo placeholder (will be replaced with your logo later)
+                        img(src="/favicon/favicon-96x96.png", alt="Logo", height="32", width="32")
+                        span.fw-bold.fs-2.text-dark.ms-2 PeerRide
+
                     hr
 
                     ul.nav.flex-column.mb-auto
@@ -36,9 +48,14 @@ html(lang="en")
                                 i.bi.bi-speedometer.me-2
                                 | Dashboard
                         li.nav-item
-                            a.nav-link.d-flex.align-items-center.rounded.px-3.py-2.text-dark(class=currentRoute == '/create/ride' ? 'active bg-primary text-white' : '', href="/create/ride")
-                                i.bi.bi-car-front-fill.me-2
-                                | New Ride
+                            if userSession.role === "Admin" || userSession.role === "Driver"
+                                a.nav-link.d-flex.align-items-center.rounded.px-3.py-2.text-dark(class=currentRoute == '/create/ride' ? 'active bg-primary text-white' : '', href="/create/ride")
+                                    i.bi.bi-car-front-fill.me-2
+                                    | New Ride
+                            else 
+                                a.nav-link.d-flex.align-items-center.rounded.px-3.py-2.text-dark(class=currentRoute == '/create/ride' ? 'active bg-primary text-white' : '', href="/create/ride").disabled.text-muted
+                                    i.bi.bi-car-front-fill.me-2
+                                    | New Ride
                         li.nav-item
                             a.nav-link.d-flex.align-items-center.rounded.px-3.py-2.text-dark(class=currentRoute == '/rides' ? 'active bg-primary text-white' : '', href="/rides")
                                 i.bi.bi-bag-check-fill.me-2

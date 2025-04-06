@@ -230,6 +230,9 @@ html, body {
     .card-img-top {
         height: 200px !important; /* Adjust for laptops */
     }
+    #closeSidebar {
+        display: none;
+      }
 }
 
 @media (min-width: 1440px) {
@@ -310,4 +313,24 @@ button, a, .card {
     .custom_search {
         width: 120px !important;
     }
+    .custom_mobile_margin{
+        margin-top: 15px;
+    }
+}
+
+:root {
+    --bs-primary: #FF5F00ff; /* Bootstrap’s yellow shade */
+    --bs-primary-rgb: 255, 95, 0;
+    color-scheme: light;
+}
+
+/* If you want to also modify button hover and focus effects, you can target them like so: */
+.btn-primary {
+    background-color: var(--bs-primary) !important;
+    border-color: var(--bs-primary) !important;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+    background-color: #e14e00 !important; /* Darker shade of the primary color */
+    border-color: #e14e00 !important;
 }

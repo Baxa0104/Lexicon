@@ -76,7 +76,7 @@ class Ride {
              b.booking_time, b.status, b.payment_status
       FROM booking AS b
       JOIN ride AS r ON b.ride_id = r.ride_id
-      WHERE b.user_id = ?
+      WHERE b.user_id = ? AND (b.status = 'Pending' OR b.status = 'Confirmed')
       ORDER BY b.booking_time DESC
     `;
     return db.query(sql, [userId]);
