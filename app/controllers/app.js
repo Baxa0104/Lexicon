@@ -38,7 +38,7 @@ const sessionStore = new mysqlSession({
 
 app.use(session({
   key: "user_sid",
-  secret: process.env.SESSION_SECRET || "your-secret-key",
+  secret: process.env.SESSION_SECRET,
   store: sessionStore,
   resave: false,
   saveUninitialized: false,
@@ -210,7 +210,7 @@ app.get('/logout', (req, res) => {
 // ----------------------
 // Dashboard Routes
 // ----------------------
-app.get("/", (req, res) => res.redirect('/dashboard'));
+app.get("/", (req, res) => res.redirect('/login'));
 
 app.get("/dashboard", requireAuth, async (req, res) => {
   if (!req.session.user) {

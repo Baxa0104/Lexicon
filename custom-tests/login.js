@@ -2,7 +2,7 @@ describe('Login Page', function() {
     it('should log in with valid credentials', function(browser) {
         // Step 1: Navigate to login page
         browser
-            .url('http://localhost:3000/login')
+            .url('http://localhost:3030/login')
             .waitForElementVisible('body', 1000) // Wait for the page to load
 
         // Step 2: Fill in login form (adjust selectors as per your page)
