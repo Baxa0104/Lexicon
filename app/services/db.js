@@ -17,6 +17,7 @@ const config = {
     connectionLimit: 15,
     queueLimit: 0,
     ssl: {
+      rejectUnauthorized: false,
       ca: fs.readFileSync(caCertPath)
     },
     // Additional connection options that might help

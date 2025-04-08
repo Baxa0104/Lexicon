@@ -1,4 +1,4 @@
-name: Login Test
+name: Run Test
 
 on:
   workflow_dispatch:

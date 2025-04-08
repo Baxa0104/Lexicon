@@ -29,6 +29,7 @@ jobs:
         run: |
           sshpass -p "$VPS_PASSWORD" ssh -o StrictHostKeyChecking=no "$VPS_USER"@"$VPS_IP" "
             cd Lexicon && \
+            git checkout master && \
             git pull && \
             npm install && \
             pm2 restart PeerRide || pm2 start index.js --name 'PeerRide'
