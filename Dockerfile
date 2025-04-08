@@ -15,6 +15,6 @@ RUN npm install -g supervisor && npm install && npm install supervisor
 COPY . /src
 
 # Expose our application port (3000)
-EXPOSE 3000
+EXPOSE 3030
 
 

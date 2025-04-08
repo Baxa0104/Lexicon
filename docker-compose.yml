@@ -7,6 +7,6 @@ services:
       - .:/src
     command: supervisor -e 'js,pug,html' index.js
     ports:
-      - "3000:3000"
+      - "3030:3030"
     environment:
       - DATABASE_URL=${DATABASE_URL}
