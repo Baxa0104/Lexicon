@@ -43,8 +43,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: process.env.NODE_ENV === 'production',
-    httpOnly: true,
+    domain: '.craftloop.mywire.org',
     maxAge: 3600000,
   }
 }));
