@@ -1,7 +1,7 @@
 extends layout
 
 block content
-    .container.d-flex.flex-column(style="max-width: 1000px; width: 100%; padding: 0px;")
+    .container.d-flex.flex-column(style="max-width: 1000px; width: 100%; padding: 0px; height: 100%;")
         h2.mb-4 Ride Details
         // --- TOASTS ---  
         // Error Toast
@@ -92,6 +92,8 @@ block content
                     else
                         button.btn.btn-danger(type="button", onclick="showNoSeatsPopup()") 🚫 No Seats Available
                     a.btn.btn-info(href=`/social/${ride.user_id}`) 💬 Contact Driver
+
+        hr
 
         // No Ride Found
         if !ride

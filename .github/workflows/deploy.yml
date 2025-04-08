@@ -1,0 +1,37 @@
+
+name: Deploy to VPS
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+      - development
+      - release
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up SSH
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y sshpass
+      - name: Deploy to VPS using SSH with Password
+        env:
+          VPS_USER: ${{ secrets.VPS_USER }}
+          VPS_PASSWORD: ${{ secrets.VPS_PASSWORD }}
+          VPS_IP: ${{ secrets.VPS_IP }}
+        run: |
+          sshpass -p "$VPS_PASSWORD" ssh -o StrictHostKeyChecking=no "$VPS_USER"@"$VPS_IP" "
+            cd Lexicon && \
+            git pull && \
+            npm install && \
+            pm2 restart PeerRide || pm2 start index.js --name 'PeerRide'
+            pm2 save
+            systemctl reload nginx
+          "

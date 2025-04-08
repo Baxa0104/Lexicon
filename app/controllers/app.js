@@ -644,7 +644,7 @@ app.post('/create/ride', requireAuth, isDriver, upload.single("ride_image"), asy
 // ======================
 // Server Initialization
 // ======================
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3030;
 app.listen(PORT, () => {
   console.log(`Server running at http://127.0.0.1:${PORT}`);
 });
