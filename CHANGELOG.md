@@ -24,3 +24,8 @@
 - **Login/Registration Functionality**
 - **Booking and Listing Creation**
 - **User Profile. Responsive Layout** 
+
+## [v1.1.2] - 2025-04-08
+### Fixed.
+- Small display or disappearing image container in user profile and scoial pages
+- Adjustements in main containers of dashboard, social and listing details pages
